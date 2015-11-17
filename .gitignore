@@ -1,5 +1,6 @@
 trash
 server
 *.xcf
+*.svg
 *.bkp
 *.geany
