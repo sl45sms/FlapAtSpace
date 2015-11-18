@@ -371,8 +371,8 @@ rotateBullets: function(bullet) {
     var dx = this.asteroid.body.x - bullet.body.x;
     var dy = this.asteroid.body.y - bullet.body.y;
     bulletRotation= Math.atan2(dy, dx);
-    bullet.angle = bulletRotation + game.math.degToRad(-90);
-    
+    //bullet.angle = bulletRotation + game.math.degToRad(-90);
+    bullet.angle= bulletRotation* (180 / Math.PI)
     var angle = bullet.angle + (Math.PI / 2);
     
     bullet.body.velocity.x = 1000 * Math.cos(angle);
