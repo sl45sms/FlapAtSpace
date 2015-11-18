@@ -111,9 +111,11 @@ create: function() {
         var bullet = this.game.add.sprite(0, 0, 'bullet');
         this.bullets.add(bullet);
         // Set its pivot point to the center of the bullet
-        bullet.anchor.setTo(0.5, 0.5);
+        bullet.anchor.setTo(0, 0.5);
         // Enable physics on the bullet
         this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
+         
+
         // Set its initial state to "dead".
         bullet.kill();
     }
@@ -257,8 +259,8 @@ create: function() {
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
-    
-    if (this.score>30&&((this.score/30) % 1 == 0)&&this.asteroid.x<-this.asteroidsWidth) {
+    //630 30
+    if (this.score>0&&((this.score/10) % 1 == 0)&&this.asteroid.x<-this.asteroidsWidth) {
 	  this.asteroid.revive(1);
 	  this.asteroid.y = Math.floor(Math.random() * (this.height-this.asteroidsHeight)) + 1;
 	  this.asteroid.x = (Math.random() * 900) + this.width+100; //Right out of screen
@@ -281,9 +283,12 @@ create: function() {
      //TODO if score = 20000 then "Paradothikan ta sokolatakia!"
       }
 	},this);
+	//bullets
+	 this.bullets.forEachAlive(this.rotateBullets,this);
+
 	
 	
-	
+	//chocos
 	this.chocos.forEach(function(choco){
 	 if (choco.x<-this.chocosWidth){
 	   choco.revive(1); 
@@ -293,7 +298,7 @@ create: function() {
 	   }	
 	},this);
 	
-	 	 
+	//stars 	 
 	for (var i = 0; i < 300; i++)
 	{
 		//	Update the stars y position based on its speed
@@ -362,6 +367,18 @@ slowplanets:function(){
 	if (this.planetsBaseSpeed>300)
     this.planetsBaseSpeed-=10;  
 },
+rotateBullets: function(bullet) { 
+    var dx = this.asteroid.body.x - bullet.body.x;
+    var dy = this.asteroid.body.y - bullet.body.y;
+    bulletRotation= Math.atan2(dy, dx);
+    bullet.angle = bulletRotation + game.math.degToRad(-90);
+    
+    var angle = bullet.angle + (Math.PI / 2);
+    
+    bullet.body.velocity.x = 1000 * Math.cos(angle);
+    bullet.body.velocity.y = 1000 * Math.sin(angle);
+    
+},
 shootBullet:function(){
 	// Enforce a short delay between shots by recording
     // the time that each bullet is shot and testing if
@@ -392,10 +409,10 @@ shootBullet:function(){
     bullet.reset(this.player.x+this.player.width, this.player.y);
 
     //TODO Shoot it... moveToPointer?
-    //bullet.body.velocity.x = this.bullet_speed;
-    //bullet.body.velocity.y = 0;
+    bullet.body.velocity.x = this.bullet_speed;
+    bullet.body.velocity.y = 0;
    // bullet.accelerateToObject(this.asteroid,100);
-    game.physics.arcade.accelerateToObject(bullet, this.asteroid, 500);
+   // game.physics.arcade.accelerateToObject(bullet, this.asteroid, 500);
 },
 destroyasteroid:function(){
 	this.asteroid.kill();
