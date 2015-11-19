@@ -56,7 +56,7 @@ init: function(thisgame,width,height){ //You can pass any number of init paramet
             this.game.load.image('bullet', 'assets/flap/bullets.png'); 
             
             this.game.load.spritesheet('chocos', 'assets/flap/chocos.png', 80, 65);
-            this.game.load.spritesheet('whirlpool', 'assets/flap/whirlpool.png', 70, 65);
+            this.game.load.spritesheet('whirlpool', 'assets/flap/whirlpool.png', 140, 130);
             this.game.load.spritesheet('explosion', 'assets/flap/explosion.png', 128, 128);   
             this.game.load.spritesheet('ufo', 'assets/flap/ufo_sprite.png', 120, 80,3);      
             this.game.load.spritesheet('planets', 'assets/flap/hjm-planet-sheet_3.png', this.planetsWidth, this.planetsHeight,this.planetsTypes,5,15);
@@ -152,6 +152,7 @@ create: function() {
     {
        var choco = this.chocos.create( (Math.random() * 900) + 530, Math.floor(Math.random() * (this.height-this.chocosHeight)) + 1 , 'chocos',Math.floor(Math.random() * this.chocosTypes)); 
        this.game.physics.arcade.enable(choco);
+       choco.anchor.setTo(0.5, 0.5);
        choco.body.velocity.x = 1-(Math.random()*((this.chocosBaseSpeed*2)-this.chocosBaseSpeed+1)+this.chocosBaseSpeed);
        choco.inputEnabled = true
        choco.events.onInputDown.add(this.collectChoco, this);
@@ -401,7 +402,7 @@ collectChoco:function(choco){
 	this.collectedChocos++;
 	
 	var chocowhirlpool = this.game.add.sprite(choco.x, choco.y, 'whirlpool');
-    chocowhirlpool.anchor.setTo(0.0, 0.0);
+    chocowhirlpool.anchor.setTo(0.5, 0.5);
     chocowhirlpool.animations.add('slurp');
     chocowhirlpool.play('slurp', 15, false, true);
  
