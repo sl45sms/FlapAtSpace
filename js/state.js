@@ -7,8 +7,8 @@ var flapState = {
     starfield3: {},
     stars: [],
     bullet_shot_delay:100, // milliseconds (10 bullets/second)
-    bullet_speed:500, // pixels/second
-    number_of_bullets : 10,
+    bullet_speed:800, // pixels/second
+    number_of_bullets : 1,
     planets: [],
     planetsBaseSpeed:80,
     planetsWidth:135,
@@ -218,15 +218,6 @@ create: function() {
    //difficulty
    game.time.events.loop(Phaser.Timer.SECOND*5, this.updatePlanetsSpeed, this);    
    
-   
-
-//TODO powerups
-/*
- * shield full
- * shield 10%
- * slowdown planets 
- * gun
- */   
 
 
  },
@@ -280,13 +271,13 @@ create: function() {
       if (this.player.health>0) this.score += 10;
          this.scoreText.text = 'LightYears: ' + this.score;
      
+     //TODO if score =10000 tote ena bos kathe 2500
+     
      //TODO if score = 20000 then "Paradothikan ta sokolatakia!"
       }
 	},this);
 	//bullets
 	 this.bullets.forEachAlive(this.rotateBullets,this);
-
-	
 	
 	//chocos
 	this.chocos.forEach(function(choco){
@@ -368,16 +359,9 @@ slowplanets:function(){
     this.planetsBaseSpeed-=10;  
 },
 rotateBullets: function(bullet) { 
-    var dx = this.asteroid.body.x - bullet.body.x;
-    var dy = this.asteroid.body.y - bullet.body.y;
-    bulletRotation= Math.atan2(dy, dx);
-    //bullet.angle = bulletRotation + game.math.degToRad(-90);
-    bullet.angle= bulletRotation* (180 / Math.PI)
-    var angle = bullet.angle + (Math.PI / 2);
-    
-    bullet.body.velocity.x = 1000 * Math.cos(angle);
-    bullet.body.velocity.y = 1000 * Math.sin(angle);
-    
+	bullet.rotation = this.game.physics.arcade.angleBetween(bullet, this.asteroid);
+	this.game.physics.arcade.moveToObject(bullet, this.asteroid, this.bullet_speed);
+	if (bullet.x<this.player.x) bullet.kill();
 },
 shootBullet:function(){
 	// Enforce a short delay between shots by recording
@@ -390,38 +374,26 @@ shootBullet:function(){
 
     // Get a dead bullet from the pool
     var bullet = this.bullets.getFirstDead();
-
     // If there aren't any bullets available then don't shoot
     if (bullet === null || bullet === undefined) return;
-
-    // Revive the bullet
-    // This makes the bullet "alive"
     bullet.revive();
-
-    // Bullets should kill themselves when they leave the world.
-    // Phaser takes care of this for me by setting this flag
-    // but you can do it yourself by killing the bullet if
-    // its x,y coordinates are outside of the world.
     bullet.checkWorldBounds = true;
     bullet.outOfBoundsKill = true;
-
-    //TODO Set the bullet position to the gun position.
-    bullet.reset(this.player.x+this.player.width, this.player.y);
-
-    //TODO Shoot it... moveToPointer?
-    bullet.body.velocity.x = this.bullet_speed;
-    bullet.body.velocity.y = 0;
-   // bullet.accelerateToObject(this.asteroid,100);
-   // game.physics.arcade.accelerateToObject(bullet, this.asteroid, 500);
+    var bulletOffset = 20 * Math.sin(this.game.math.degToRad(this.player.angle));
+        bullet.reset(this.player.x + bulletOffset+this.player.width, this.player.y);
+        bullet.angle = this.player.angle;
+        this.game.physics.arcade.velocityFromAngle(bullet.angle - 90, this.bullet_speed, bullet.body.velocity);
+        bullet.body.velocity.x += this.player.body.velocity.x;
+        this.game.physics.arcade.moveToObject(bullet, this.asteroid, this.bullet_speed);
 },
-destroyasteroid:function(){
+destroyasteroid:function(bullet){
+	bullet.kill();
 	this.asteroid.kill();
 	this.asteroidExplosion = this.game.add.sprite(this.asteroid.x, this.asteroid.y, 'explosion');
     this.asteroidExplosion.anchor.setTo(0.5, 0.5);
     this.asteroidExplosion.rotation=this.asteroid.rotation;
     this.asteroidExplosion.animations.add('boom');
     this.asteroidExplosion.play('boom', 15, false, true);
-
 	this.asteroid.x=-this.asteroidsWidth-1;//needed for update function
 },
 collectChoco:function(choco){
