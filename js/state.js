@@ -293,7 +293,7 @@ create: function() {
 	//stars 	 
 	for (var i = 0; i < 300; i++)
 	{
-		//	Update the stars y position based on its speed
+		//	Update the stars x position based on its speed
 		this.stars[i].x -= this.stars[i].speed;
 
 		if (this.stars[i].x < 1)
