@@ -251,8 +251,8 @@ create: function() {
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
-    //630 30
-    if (this.score>0&&((this.score/10) % 1 == 0)&&this.asteroid.x<-this.asteroidsWidth) {
+    
+    if (this.score>630&&((this.score/30) % 1 == 0)&&this.asteroid.x<-this.asteroidsWidth) {
 	  this.asteroid.revive(1);
 	  this.asteroid.y = Math.floor(Math.random() * (this.height-this.asteroidsHeight)) + 1;
 	  this.asteroid.x = (Math.random() * 900) + this.width+100; //Right out of screen
