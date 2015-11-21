@@ -1,18 +1,11 @@
 var gameOver={
-	
-		stars:[],
-
 	init: function(thisgame){ //You can pass any number of init parameters
      this.game=thisgame;
-     
-     this.width=1024;
-     this.height=768;
-  
-     
+      
   },
 
 
-	create: function(){
+create: function(){
 		this.gameTitle = this.game.add.sprite(this.game.world.centerX,120,"gametitle");
 		this.gameTitle.anchor.setTo(0.5,0.5);
 		this.playButton = this.game.add.button(this.game.world.centerX,630,"taptoplay",this.playTheGame,this);
@@ -25,9 +18,6 @@ var gameOver={
 
     this.introtext.anchor.set(0.5);
 
-    this.game.globals.createStars();
-	
-	
 	
     //key mouse touch playTheGame    
    this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
