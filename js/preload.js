@@ -3,8 +3,13 @@ var preLoad={
 	  planetsWidth:135,
       planetsHeight:135,
       planetsTypes:8,
-	  preload: function() {
-           // this.game.stage.disableVisibilityChange = true; //run without focus
+   init: function(thisgame){ //You can pass any number of init parameters
+
+     this.game=thisgame;
+     this.game.stage.disableVisibilityChange = true; //run without focus  
+  },
+  preload: function() {
+         
             
         this.background = this.add.sprite(0, 0, 'preloaderBackground');
 		this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
@@ -54,7 +59,8 @@ update: function () {
 		//if (this.cache.isSoundDecoded('titleMusic') && this.ready == false)
 	//	{
 			this.ready = true;
-			this.game.state.start('introState',true,false,this);
+			this.preloadBar.kill();
+			this.game.state.start('introState',false,false,this.game);
 	//	}
 
 	}

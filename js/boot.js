@@ -1,6 +1,8 @@
 var Boot={
-	    init: function () {
 
+	    init: function (thisgame) {
+         this.game=thisgame;
+        
         this.input.maxPointers = 1;
         this.stage.disableVisibilityChange = true;
 
@@ -10,7 +12,7 @@ var Boot={
             this.scale.setMinMax(480, 260, 1024, 768);
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
-            this.scale.startFullScreen(true);
+           // this.scale.startFullScreen(true);
         }
         else
         {
@@ -21,7 +23,7 @@ var Boot={
             this.scale.forceOrientation(true, false);
             this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
             this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
-            this.scale.startFullScreen(true);
+           // this.scale.startFullScreen(true);
             
             
         }
@@ -34,9 +36,16 @@ var Boot={
 	
 	create: function () {
 
-        this.state.start('preLoad',true,false,this);
+    this.state.start('preLoad',false,false,this.game);
 
     },
+
+	update:function(){
+		
+
+
+	},
+
 
     enterIncorrectOrientation: function () {
 

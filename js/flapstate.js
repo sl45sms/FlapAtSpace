@@ -1,11 +1,6 @@
 var flapState = {
     game: {},
     player: {},
-    star: {},
-    starfield1: {},
-    starfield2: {},
-    starfield3: {},
-    stars: [],
     bullet_shot_delay:100, // milliseconds (10 bullets/second)
     bullet_speed:800, // pixels/second
     number_of_bullets : 1,
@@ -39,9 +34,16 @@ var flapState = {
     enemies:{},//Here you have to push any group that have enemies
 
 init: function(thisgame){ //You can pass any number of init parameters
+	
      this.game=thisgame;
-     this.width=1024;
-     this.height=768;
+     this.game.stage.disableVisibilityChange = false; //not run on loosing focus  
+     
+     
+     this.width=this.game.globals.width;
+     this.height=this.game.globals.height;
+     
+     
+
   },
 
 
@@ -51,42 +53,12 @@ shutDown: function(){
 },
 
 create: function() {
+	console.log("on create");
     //  We're going to be using physics, so enable the Arcade Physics system
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = '#111';
      
-    //Star field
-   	this.star = this.game.make.sprite(0, 0, 'star');
-	this.starfield1 = this.game.add.renderTexture(this.width, this.height, 'starfield1');
-	this.starfield2 = this.game.add.renderTexture(this.width, this.height, 'starfield2');
-	this.starfield3 = this.game.add.renderTexture(this.width, this.height, 'starfield3');
-
-   	this.game.add.sprite(0, 0, this.starfield1);
-	this.game.add.sprite(0, 0, this.starfield2);
-	this.game.add.sprite(0, 0, this.starfield3);
-   
-    var t = this.starfield1;
-	var s = 4;
-
-    //TODO anti na elenxo to speed mipos apla na vazo velocity -x -xx -xxx
-    //Ara anti na exo textures na einai sprite?? ti epiptosh tha exei sthn taxitita?
-	//	100 stars per layer
-	for (var i = 0; i < 300; i++) //TODO random scale...
-	{
-		if (i == 100)
-		{
-			//	With each 100 stars we ramp up the speed a little and swap to the next texture
-			s = s+2;
-			t = this.starfield2;
-		}
-		else if (i == 200)
-		{
-			s = s+1;
-			t = this.starfield3;
-		}
-
-		this.stars.push( { x: this.game.world.randomX, y: this.game.world.randomY, speed: s, texture: t });
-	}
+     this.game.globals.createStars();
 
     //Bullets
     this.bullets = this.game.add.group();
@@ -201,7 +173,7 @@ create: function() {
    this.collectedChocosText = this.game.add.text(950, 8, 'Chocos: 0', { fontSize: '32px', fill: '#fff' });
     this.collectedChocosText.fixedToCamera = true;
    //difficulty
-   game.time.events.loop(Phaser.Timer.SECOND*5, this.updatePlanetsSpeed, this);    
+   game.time.events.loop(Phaser.Timer.SECOND*5, this.updateSpeed, this);    
    
 
 
@@ -213,7 +185,7 @@ create: function() {
    	this.game.physics.arcade.overlap(this.player, this.planets, this.damage, null, this);
 	this.game.physics.arcade.overlap(this.player, this.asteroids, this.hitasteroid, null, this);
 	this.game.physics.arcade.overlap(this.player, this.shield, this.fixdamage, null, this);
-	this.game.physics.arcade.overlap(this.player, this.slowdown, this.slowplanets, null, this);                                
+	this.game.physics.arcade.overlap(this.player, this.slowdown, this.slowSpeed, null, this);                                
 
    this.game.physics.arcade.overlap(this.bullets, this.asteroids, this.destroyasteroid, null, this);
 	
@@ -230,7 +202,7 @@ create: function() {
 	  this.shield.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
     
-	if (this.score>0&&((this.score/1110) % 1 == 0)&&this.slowdown.x<-this.powerUpsWidth) {
+	if (this.score>880&&((this.score/220) % 1 == 0)&&this.slowdown.x<-this.powerUpsWidth) {
 	  this.slowdown.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
@@ -256,11 +228,14 @@ create: function() {
       if (this.player.health>0) this.score += 10;
          this.scoreText.text = 'LightYears: ' + this.score;
      
-     //TODO if score =10000 tote ena bos kathe 2500
+     //TODO if score =5000 tote ena bos kathe 2500
+     
+     //todo ena megalo bos sta 19500
      
      //TODO if score = 20000 then "Paradothikan ta sokolatakia!"
       }
 	},this);
+	
 	//bullets
 	 this.bullets.forEachAlive(this.rotateBullets,this);
 	
@@ -274,31 +249,8 @@ create: function() {
 	   }	
 	},this);
 	
-	//stars 	 
-	for (var i = 0; i < 300; i++)
-	{
-		//	Update the stars x position based on its speed
-		this.stars[i].x -= this.stars[i].speed;
-
-		if (this.stars[i].x < 1)
-		{
-			//	Off the left of the screen? Then wrap around to the right
-			this.stars[i].y = this.game.world.randomY;
-			this.stars[i].x = this.width;
-		}
-
-		if (i == 0 || i == 100 || i == 200)
-		{
-			//	If it's the first star of the layer then we clear the texture
-			this.stars[i].texture.renderXY(this.star, this.stars[i].x, this.stars[i].y, true);
-		}
-		else
-		{
-			//	Otherwise just draw the star sprite where we need it
-			this.stars[i].texture.renderXY(this.star, this.stars[i].x, this.stars[i].y, false);
-		}
-	}
-
+    //stars
+    this.game.globals.updateStars();
 
 //Slowly rotate the ufo downward, up to a certain point.
         if (this.player.angle < 20)
@@ -308,8 +260,9 @@ create: function() {
 render: function(){
     
 },
-updatePlanetsSpeed:function(){
+updateSpeed:function(){
   this.planetsBaseSpeed+=10;
+  this.chocosBaseSpeed+=10;
 },
 hitasteroid:function(){
 this.player.health=0;
@@ -321,7 +274,7 @@ damage: function(){
   this.ondamage=10;
   this.player.damage((this.planetsBaseSpeed/70));
   this.updateHealthBar();
-//TODO an to health ginei 0 tote game over
+
  if (this.player.health<0)
  {
 	this.playerExplosion = this.game.add.sprite(this.player.x, this.player.y, 'explosion');
@@ -333,15 +286,21 @@ damage: function(){
 	if (this.score > localStorage.getItem("highscore")) {//save highscore
                 localStorage.setItem("highscore", this.score);
             }
-	}
+    this.score=0;
+    this.planetsBaseSpeed=80;
+    this.chocosBaseSpeed=120;        
+	this.game.state.start('gameOver',false,false,this.game);
+	} 
 },
 fixdamage:function(){
 	 this.player.damage(-3);
      this.updateHealthBar();
 	},
-slowplanets:function(){
-	if (this.planetsBaseSpeed>300)
-    this.planetsBaseSpeed-=10;  
+slowSpeed:function(){
+	if (this.planetsBaseSpeed>200)
+    this.planetsBaseSpeed-=20;
+    if (this.chocosBaseSpeed>220) 
+      this.chocosBaseSpeed-=20;
 },
 rotateBullets: function(bullet) { 
 	bullet.rotation = this.game.physics.arcade.angleBetween(bullet, this.asteroid);
