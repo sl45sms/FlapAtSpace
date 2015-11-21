@@ -1,17 +1,14 @@
 var introState = {
 	stars:[],
 
-	init: function(thisgame,width,height){ //You can pass any number of init parameters
+	init: function(thisgame){ //You can pass any number of init parameters
      this.game=thisgame;
-     this.width=width;
-     this.height=height;
+     
+     this.width=1024;
+     this.height=768;
+  
+     
   },
-	 preload: function() {
-            this.game.stage.disableVisibilityChange = true; //run without focus
-            this.game.load.image("gametitle","assets/flap/gametitle.png");
-            this.game.load.image("taptoplay","assets/flap/taptoplay.png");
-            this.game.load.image('star', 'assets/flap/star.png');
-         },
 
 
 	create: function(){
@@ -70,6 +67,13 @@ var introState = {
 
 		this.stars.push( { x: this.game.world.randomX, y: this.game.world.randomY, speed: s, texture: t });
 	}
+	
+	
+	
+	   //key mouse touch playTheGame    
+   this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+   this.spaceKey.onDown.add(this.playTheGame, this); 
+   this.input.onDown.add(this.playTheGame, this); //Gia touch se kinita kai mouse
 
 	},
 	update:function(){
@@ -99,7 +103,7 @@ var introState = {
 
 	},
 	playTheGame: function(){
-		game.state.add("flapState", eval("flapState"))
+
 		game.state.start("flapState",true,false,this.game,this.width,this.height);
 	}
 

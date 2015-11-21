@@ -38,29 +38,13 @@ var flapState = {
     collectables:{},//Here you have to push any group that have collectable objects
     enemies:{},//Here you have to push any group that have enemies
 
-init: function(thisgame,width,height){ //You can pass any number of init parameters
+init: function(thisgame){ //You can pass any number of init parameters
      this.game=thisgame;
-     this.width=width;
-     this.height=height;
+     this.width=1024;
+     this.height=768;
   },
 
- preload: function() {
-            this.game.stage.disableVisibilityChange = true; //run without focus
-            
-            this.game.load.image('star', 'assets/flap/star.png');
-            this.game.load.image('health_back', 'assets/flap/health_back.png');
-            this.game.load.image('health_bar', 'assets/flap/health_bar.png');
-            this.game.load.image('shield', 'assets/flap/shield.png');
-            this.game.load.image('slowdown', 'assets/flap/slowdown.png');            
-            this.game.load.image('asteroid', 'assets/flap/asteroid.png'); 
-            this.game.load.image('bullet', 'assets/flap/bullets.png'); 
-            
-            this.game.load.spritesheet('chocos', 'assets/flap/chocos.png', 80, 65);
-            this.game.load.spritesheet('whirlpool', 'assets/flap/whirlpool.png', 140, 130);
-            this.game.load.spritesheet('explosion', 'assets/flap/explosion.png', 128, 128);   
-            this.game.load.spritesheet('ufo', 'assets/flap/ufo_sprite.png', 120, 80,3);      
-            this.game.load.spritesheet('planets', 'assets/flap/hjm-planet-sheet_3.png', this.planetsWidth, this.planetsHeight,this.planetsTypes,5,15);
-},
+
 
 shutDown: function(){
 
