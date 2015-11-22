@@ -23,6 +23,7 @@ var preLoad={
             this.game.load.image("taptoplay","assets/intro/taptoplay.png");
 
             this.game.load.image('nubulu', 'assets/flap/background.png');
+            this.game.load.image('gametitlesmall', 'assets/flap/gametitleSmall.png');
             this.game.load.image('star', 'assets/flap/star.png');
             this.game.load.image('health_back', 'assets/flap/health_back.png');
             this.game.load.image('health_bar', 'assets/flap/health_bar.png');

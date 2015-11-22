@@ -28,8 +28,9 @@ var flapState = {
     ondamage:0,
     health_bar: "",
     healthwidth: 210,
-    score:0,
-    scoreText:"",
+    distance:0,
+    distanceText:"",
+    maxDistance:20000,
     collectables:{},//Here you have to push any group that have collectable objects
     enemies:{},//Here you have to push any group that have enemies
 
@@ -64,7 +65,7 @@ create: function() {
     this.nubulu = this.game.add.tileSprite(0, 0, 1024, 768, 'nubulu');
    
      
-     this.game.globals.createStars();
+    this.game.globals.createStars();
 
     //Bullets
     this.bullets = this.game.add.group();
@@ -76,8 +77,6 @@ create: function() {
         bullet.anchor.setTo(0, 0.5);
         // Enable physics on the bullet
         this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
-         
-
         // Set its initial state to "dead".
         bullet.kill();
     }
@@ -116,8 +115,9 @@ create: function() {
        this.game.physics.arcade.enable(choco);
        choco.anchor.setTo(0.5, 0.5);
        choco.body.velocity.x = 1-(Math.random()*((this.chocosBaseSpeed*2)-this.chocosBaseSpeed+1)+this.chocosBaseSpeed);
-       choco.inputEnabled = true
+       choco.inputEnabled = true;
        choco.events.onInputDown.add(this.collectChoco, this);
+       choco.input.useHandCursor = true;
     }
 
      //asteroids
@@ -127,7 +127,8 @@ create: function() {
      this.asteroid.anchor.setTo(0.5, 0.5);
      this.asteroid.body.velocity.x = 1-(Math.random()*((this.asteroidsSpead*2)-this.asteroidsSpead+1)+this.asteroidsSpead);
      this.asteroid.body.angularVelocity=-100;
-     this.asteroid.inputEnabled = true
+     this.asteroid.inputEnabled = true;
+     this.asteroid.input.useHandCursor = true;
     // this.asteroid.events.onInputDown.add(this.destroyasteroid, this);
      this.asteroid.events.onInputDown.add(this.shootBullet,this);
  
@@ -149,38 +150,60 @@ create: function() {
    this.player.health = this.player.maxHealth;
    this.player.anchor.setTo(-0.2, 0.5); 
    
+   //player 
+   var player=this.player;
+   
+   //logo
+   	this.gameTitle = this.game.add.sprite(10,10,"gametitlesmall");
+	this.gameTitle.anchor.setTo(0,0);
+   
    //health bar
-   this.game.add.sprite(10,10,'health_back');
-   this.health_bar = this.game.add.sprite(10,10,'health_bar');
+   this.health_bar_back=this.game.add.sprite(this.gameTitle.width+20,12,'health_back');
+   this.health_bar_back.fixedToCamera = true;
+   this.health_bar_back.anchor.setTo(0,0);
+   this.health_bar = this.game.add.sprite(this.gameTitle.width+20,12,'health_bar');
    this.health_bar.cropEnabled = true;
+   this.health_bar.fixedToCamera = true;
+   this.health_bar.anchor.setTo(0,0);
+
+   
+   //The score
+   //this.distanceText = this.game.add.text(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'Απόσταση: ' + this.pad(this.maxDistance,5)+'ΕΦ', { fontSize: '18px', fill: '#fff' });
+   this.distanceText = game.add.bitmapText(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'introFonts','Απόσταση: ' + this.pad(this.maxDistance,5)+'ΕΦ',26);
+   this.distanceText.anchor.setTo(0,0);
+   this.distanceText.fixedToCamera = true;
+
+
+   //the chocos
+   //this.collectedChocosText = this.game.add.text(this.distanceText.x+this.distanceText.width+10, 8, 'Σοκολάτες: 0', { fontSize: '18px', fill: '#fff' });
+   this.collectedChocosText = game.add.bitmapText(this.distanceText.x+this.distanceText.width+30, 2, 'introFonts','Σοκολάτες: 0',32);
+   this.collectedChocosText.tint = 0xbd9677;
+   this.collectedChocosText.anchor.setTo(0,0);
+   this.collectedChocosText.fixedToCamera = true;
+
+   //highscore
+   if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 5630);//beatme!
+   this.highscore=localStorage.getItem("highscore");
+   this.highscoreText=this.game.add.text(this.world.width-240, 8, 'Κορυφαίο: '+this.pad(this.highscore,6), { fontSize: '18px', fill: '#f00' });
+   this.highscoreText.fixedToCamera = true;
+
 
    //key mouse touch jump    
    this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
    this.spaceKey.onDown.add(this.jump, this); 
    this.input.onDown.add(this.jump, this); //Gia touch se kinita kai mouse
    
+   
+   
+   
    //enemies   
    this.enemies.planets=this.planets; 
    this.enemies.asteroids=this.asteroids;
    
    //collectables
+   this.collectables.chocos=this.chocos;    
    
    
-   //player 
-   var player=this.player;
-   
-   //The score
-   this.scoreText = this.game.add.text(250, 8, 'LightYears: 0', { fontSize: '32px', fill: '#fff' });
-   this.scoreText.fixedToCamera = true;
-
-   //highscore
-   if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 5631);//beatme!
-   this.highscore=localStorage.getItem("highscore");
-   this.highscoreText=this.game.add.text(570, 8, 'HighScore: '+this.highscore, { fontSize: '32px', fill: '#f00' });
-   
-   //the chocos
-   this.collectedChocosText = this.game.add.text(950, 8, 'Chocos: 0', { fontSize: '32px', fill: '#fff' });
-    this.collectedChocosText.fixedToCamera = true;
    //difficulty
    game.time.events.loop(Phaser.Timer.SECOND*5, this.updateSpeed, this);    
    
@@ -204,20 +227,20 @@ create: function() {
 	//console.log(this.ondamage);
 	
 	
-	if (this.score>0&&((this.score/110) % 1 == 0)&&this.shield.x<-this.powerUpsWidth) {
+	if (this.distance>0&&((this.distance/110) % 1 == 0)&&this.shield.x<-this.powerUpsWidth) {
 	  //console.log(this.shield.x,this.powerups.children[0].x,this.powerups.getAt(0).x);
 	  this.shield.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
 	  this.shield.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.shield.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
     
-	if (this.score>880&&((this.score/630) % 1 == 0)&&this.slowdown.x<-this.powerUpsWidth) {
+	if (this.distance>880&&((this.distance/630) % 1 == 0)&&this.slowdown.x<-this.powerUpsWidth) {
 	  this.slowdown.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
     
-    if (this.score>630&&((this.score/30) % 1 == 0)&&this.asteroid.x<-this.asteroidsWidth) {
+    if (this.distance>630&&((this.distance/30) % 1 == 0)&&this.asteroid.x<-this.asteroidsWidth) {
 	  this.asteroid.revive(1);
 	  this.asteroid.y = Math.floor(Math.random() * (this.height-this.asteroidsHeight)) + 1;
 	  this.asteroid.x = (Math.random() * 900) + this.width+100; //Right out of screen
@@ -234,8 +257,8 @@ create: function() {
     
      
      //Add and update the score
-      if (this.player.health>0) this.score += 10;
-         this.scoreText.text = 'LightYears: ' + this.score;
+      if (this.player.health>0) this.distance += 10;
+         this.distanceText.text = 'Απόσταση: ' + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';
      
      //TODO if score =5000 tote ena bos kathe 2500
      
@@ -292,10 +315,10 @@ damage: function(){
     this.playerExplosion.animations.add('caboom');
     this.playerExplosion.play('caboom', 15, false, true);
 
-	if (this.score > localStorage.getItem("highscore")) {//save highscore
-                localStorage.setItem("highscore", this.score);
+	if (this.distance > localStorage.getItem("highscore")) {//save highscore
+                localStorage.setItem("highscore", this.distance);
             }
-    this.score=0;
+    this.distance=0;
     this.planetsBaseSpeed=80;
     this.chocosBaseSpeed=120;        
 	this.game.state.start('gameOver',false,false,this.game);
@@ -359,7 +382,7 @@ collectChoco:function(choco){
     chocowhirlpool.play('slurp', 15, false, true);
  
 	choco.x = -this.chocosWidth-1;
-	this.collectedChocosText.text = "Chocos: "+this.collectedChocos;
+	this.collectedChocosText.text = "Σοκολάτες: "+this.collectedChocos;
 },
 jump: function() {  
     // Add a vertical velocity to the ufo
@@ -376,6 +399,9 @@ updateHealthBar:function(){
 restartGame: function() {  
     var stateKey = this.game.state.getCurrentState().state.current;
     this.game.state.start(stateKey,true,false,this.game,"");
+},
+pad: function(num,size){
+return ('00000000'+num).substr(-size);
 }
 
 };
