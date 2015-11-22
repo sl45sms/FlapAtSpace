@@ -168,15 +168,12 @@ create: function() {
 
    
    //The score
-   //this.distanceText = this.game.add.text(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'Απόσταση: ' + this.pad(this.maxDistance,5)+'ΕΦ', { fontSize: '18px', fill: '#fff' });
    this.distanceText = game.add.bitmapText(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'introFonts','Απόσταση: ' + this.pad(this.maxDistance,5)+'ΕΦ',26);
    this.distanceText.anchor.setTo(0,0);
    this.distanceText.fixedToCamera = true;
 
-
    //the chocos
-   //this.collectedChocosText = this.game.add.text(this.distanceText.x+this.distanceText.width+10, 8, 'Σοκολάτες: 0', { fontSize: '18px', fill: '#fff' });
-   this.collectedChocosText = game.add.bitmapText(this.distanceText.x+this.distanceText.width+30, 2, 'introFonts','Σοκολάτες: 0',32);
+   this.collectedChocosText = game.add.bitmapText(this.distanceText.x+this.distanceText.width+15, 2, 'introFonts','Σοκολάτες: '+this.pad(this.collectedChocos,8),34);
    this.collectedChocosText.tint = 0xbd9677;
    this.collectedChocosText.anchor.setTo(0,0);
    this.collectedChocosText.fixedToCamera = true;
@@ -184,7 +181,9 @@ create: function() {
    //highscore
    if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 5630);//beatme!
    this.highscore=localStorage.getItem("highscore");
-   this.highscoreText=this.game.add.text(this.world.width-240, 8, 'Κορυφαίο: '+this.pad(this.highscore,6), { fontSize: '18px', fill: '#f00' });
+   this.highscoreText=this.game.add.bitmapText(this.world.width-180, 8, 'introFonts','Κορυφαίο: '+this.pad(this.highscore,6),26);
+   this.highscoreText.tint = 0xff9040;
+   this.highscoreText.anchor.setTo(0,0);
    this.highscoreText.fixedToCamera = true;
 
 
@@ -193,9 +192,7 @@ create: function() {
    this.spaceKey.onDown.add(this.jump, this); 
    this.input.onDown.add(this.jump, this); //Gia touch se kinita kai mouse
    
-   
-   
-   
+      
    //enemies   
    this.enemies.planets=this.planets; 
    this.enemies.asteroids=this.asteroids;
@@ -382,7 +379,7 @@ collectChoco:function(choco){
     chocowhirlpool.play('slurp', 15, false, true);
  
 	choco.x = -this.chocosWidth-1;
-	this.collectedChocosText.text = "Σοκολάτες: "+this.collectedChocos;
+	this.collectedChocosText.text = 'Σοκολάτες: '+this.pad(this.collectedChocos,8);
 },
 jump: function() {  
     // Add a vertical velocity to the ufo
