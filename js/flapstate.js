@@ -56,7 +56,13 @@ create: function() {
 	console.log("on create");
     //  We're going to be using physics, so enable the Arcade Physics system
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+   
+   
+   
     this.game.stage.backgroundColor = '#111';
+    //nubulu as background (place first-- oreder of sprites matters)
+    this.nubulu = this.game.add.tileSprite(0, 0, 1024, 768, 'nubulu');
+   
      
      this.game.globals.createStars();
 
@@ -124,6 +130,9 @@ create: function() {
      this.asteroid.inputEnabled = true
     // this.asteroid.events.onInputDown.add(this.destroyasteroid, this);
      this.asteroid.events.onInputDown.add(this.shootBullet,this);
+ 
+
+ 
  
    //Player
    this.player = this.game.add.sprite(80, 500, 'ufo');

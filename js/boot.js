@@ -16,6 +16,7 @@ var Boot={
         }
         else
         {
+			this.scale.windowConstraints.bottom = "visual"; 
             this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.scale.setMinMax(480, 260, 1024, 768);
             this.scale.pageAlignHorizontally = true;
