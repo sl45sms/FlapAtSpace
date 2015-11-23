@@ -153,6 +153,11 @@ create: function() {
    //player 
    var player=this.player;
    
+   //wall at bottom
+   this.wall = this.add.tileSprite(0,this.world.height-10, this.world.width, this.world.height, 'transparent');
+   this.wall.fixedToCamera = true; 
+   this.game.physics.arcade.enable(this.wall);
+   
    //logo
    	this.gameTitle = this.game.add.sprite(10,10,"gametitlesmall");
 	this.gameTitle.anchor.setTo(0,0);
@@ -212,11 +217,12 @@ create: function() {
 
 	   
    	this.game.physics.arcade.overlap(this.player, this.planets, this.damage, null, this);
+   	this.game.physics.arcade.overlap(this.player, this.wall, this.damage, null, this);   	
 	this.game.physics.arcade.overlap(this.player, this.asteroids, this.hitasteroid, null, this);
 	this.game.physics.arcade.overlap(this.player, this.shield, this.fixdamage, null, this);
 	this.game.physics.arcade.overlap(this.player, this.slowdown, this.slowSpeed, null, this);                                
 
-   this.game.physics.arcade.overlap(this.bullets, this.asteroids, this.destroyasteroid, null, this);
+    this.game.physics.arcade.overlap(this.bullets, this.asteroids, this.destroyasteroid, null, this);
 	
 	if (this.player.health>this.player.maxHealth) this.player.frame = 1; else 
 	    if (this.ondamage-->0) this.player.frame = 2; else  

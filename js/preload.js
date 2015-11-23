@@ -31,6 +31,7 @@ var preLoad={
             this.game.load.image('slowdown', 'assets/flap/slowdown.png');            
             this.game.load.image('asteroid', 'assets/flap/asteroid.png'); 
             this.game.load.image('bullet', 'assets/flap/bullets.png'); 
+            this.game.load.image('transparent', 'assets/flap/transparent.png');             
             
             this.game.load.spritesheet('chocos', 'assets/flap/chocos.png', 160, 180);
             this.game.load.spritesheet('whirlpool', 'assets/flap/whirlpool.png', 140, 130);
