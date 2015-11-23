@@ -11,20 +11,13 @@ create: function(){
 		this.playButton = this.game.add.button(this.game.world.centerX,630,"taptoplay",this.playTheGame,this);
 		this.playButton.anchor.setTo(0.5,0.5);
 
-/*
-	var style = { font: "25px Arial", fill: "#ffffff", align: "center" };
 
-    this.introtext = game.add.text(this.game.world.centerX, this.game.world.centerY-60, "Εχασές! Πάμε παλί απο την αρχή!", style);
-
-    this.introtext.anchor.set(0.5);
-*/
-
-var ypos=(this.gameTitle.y+this.gameTitle.height)+90;
-this.gameOverText = game.add.bitmapText(this.game.world.centerX, ypos+1,'introFonts','Έχασες!', 64);    
-this.gameOverText.anchor.set(0.5,0.5);
-   this.gameOverText.tint = 0xFF9677;
-this.gameOverAgain = game.add.bitmapText(this.game.world.centerX, ypos+1+this.gameOverText.height+10,'introFonts','Πάμε παλί απο την αρχή;', 32);    
-this.gameOverAgain.anchor.set(0.5,0.5);
+        var ypos=(this.gameTitle.y+this.gameTitle.height)+90;
+        this.gameOverText = game.add.bitmapText(this.game.world.centerX, ypos+1,'introFonts','Έχασες!', 64);    
+        this.gameOverText.anchor.set(0.5,0.5);
+        this.gameOverText.tint = 0xFF9677;
+        this.gameOverAgain = game.add.bitmapText(this.game.world.centerX, ypos+1+this.gameOverText.height+10,'introFonts','Πάμε παλί απο την αρχή;', 32);    
+        this.gameOverAgain.anchor.set(0.5,0.5);
 
 
 	
@@ -39,11 +32,13 @@ this.gameOverAgain.anchor.set(0.5,0.5);
 
 	},
 	playTheGame: function(){
+       
        this.gameTitle.kill();
        this.gameOverText.kill();
        this.gameOverAgain.kill();
        this.playButton.kill();
-		game.state.start("flapState",true,false,this.game);
+	   game.state.start("flapState",true,false,this.game);
+	
 	}
 	
 	}
