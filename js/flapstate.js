@@ -9,6 +9,9 @@ var flapState = {
     planetsWidth:135,
     planetsHeight:135,
     planetsTypes:8,
+    blackholeWidth:230,
+    blackholeHeight:260,
+    blackholeSpeed:50,
     chocos: [],
     chocosBaseSpeed:120,
     chocosWidth:80,
@@ -64,8 +67,18 @@ create: function() {
     //nubulu as background (place first-- oreder of sprites matters)
     this.nubulu = this.game.add.tileSprite(0, 0, 1024, 768, 'nubulu');
    
-     
+     //stars 
     this.game.globals.createStars();
+    
+    //blackhole above all 
+      this.blackhole = this.game.add.sprite((Math.random() * 900) + 530, 500, 'blackhole');
+      this.game.physics.arcade.enable(this.blackhole);
+      this.blackhole.animations.add('hairyblackhole');
+      this.blackhole.play('hairyblackhole', 15, true, true);
+      this.blackhole.body.angularVelocity=-120;  
+      this.blackhole.anchor.setTo(0.5, 0.5);
+      this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
+
 
     //Bullets
     this.bullets = this.game.add.group();
@@ -106,6 +119,8 @@ create: function() {
       this.slowdown = this.powerups.create((Math.random() * 900) + 530, -1000, 'slowdown',1);
       this.game.physics.arcade.enable(this.slowdown);
       this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
+    
+    
     
      //chocos
      this.chocos =  this.game.add.group();
@@ -229,6 +244,13 @@ create: function() {
 	         this.player.frame = 0;
 	//console.log(this.ondamage);
 	
+
+	if (this.distance>0&&((this.distance/20) % 1 == 0)&&this.blackhole.x<-this.blackholeWidth) {
+	  this.blackhole.y = Math.floor(Math.random() * (this.height-this.blackholeHeight)) + 1;
+	  this.blackhole.x = (Math.random() * 900) + this.width+100; //Right out of screen
+	  this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
+     }
+
 	
 	if (this.distance>0&&((this.distance/110) % 1 == 0)&&this.shield.x<-this.powerUpsWidth) {
 	  //console.log(this.shield.x,this.powerups.children[0].x,this.powerups.getAt(0).x);
