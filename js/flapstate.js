@@ -236,6 +236,12 @@ create: function() {
 	this.game.physics.arcade.overlap(this.player, this.asteroids, this.hitasteroid, null, this);
 	this.game.physics.arcade.overlap(this.player, this.shield, this.fixdamage, null, this);
 	this.game.physics.arcade.overlap(this.player, this.slowdown, this.slowSpeed, null, this);                                
+    
+    this.game.physics.arcade.overlap(this.blackhole,this.chocos, this.BlackHoleEatSprite, null, this);                                
+  
+
+
+
 
     this.game.physics.arcade.overlap(this.bullets, this.asteroids, this.destroyasteroid, null, this);
 	
@@ -408,6 +414,10 @@ collectChoco:function(choco){
  
 	choco.x = -this.chocosWidth-1;
 	this.collectedChocosText.text = 'Σοκολάτες: '+this.pad(this.collectedChocos,8);
+},
+BlackHoleEatSprite: function(blackhole,victim){
+ game.add.tween(victim).to( { angle: 360 }, 400, Phaser.Easing.Linear.None, true);
+  game.add.tween(victim.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Linear.None, true);
 },
 jump: function() {  
     // Add a vertical velocity to the ufo
