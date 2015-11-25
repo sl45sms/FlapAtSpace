@@ -237,7 +237,7 @@ create: function() {
 	this.game.physics.arcade.overlap(this.player, this.shield, this.fixdamage, null, this);
 	this.game.physics.arcade.overlap(this.player, this.slowdown, this.slowSpeed, null, this);                                
     
-    this.game.physics.arcade.overlap(this.blackhole,this.chocos, this.BlackHoleEatSprite, null, this);                                
+    this.game.physics.arcade.overlap(this.blackhole,[this.chocos,this.planets,this.asteroids,this.shield,this.slowdown,this.player], this.BlackHoleEatSprite, null, this);                                
   
 
 
@@ -245,19 +245,20 @@ create: function() {
 
     this.game.physics.arcade.overlap(this.bullets, this.asteroids, this.destroyasteroid, null, this);
 	
+	
 	if (this.player.health>this.player.maxHealth) this.player.frame = 1; else 
 	    if (this.ondamage-->0) this.player.frame = 2; else  
 	         this.player.frame = 0;
 	//console.log(this.ondamage);
 	
-
-	if (this.distance>0&&((this.distance/20) % 1 == 0)&&this.blackhole.x<-this.blackholeWidth) {
+   //backhole
+	if (this.distance>1200&&((this.distance/720) % 1 == 0)&&this.blackhole.x<-this.blackholeWidth) {
 	  this.blackhole.y = Math.floor(Math.random() * (this.height-this.blackholeHeight)) + 1;
 	  this.blackhole.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
      }
 
-	
+	//shield
 	if (this.distance>0&&((this.distance/110) % 1 == 0)&&this.shield.x<-this.powerUpsWidth) {
 	  //console.log(this.shield.x,this.powerups.children[0].x,this.powerups.getAt(0).x);
 	  this.shield.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
@@ -265,13 +266,15 @@ create: function() {
 	  this.shield.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
     
+    //slowdown
 	if (this.distance>880&&((this.distance/630) % 1 == 0)&&this.slowdown.x<-this.powerUpsWidth) {
 	  this.slowdown.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
     
-    if (this.distance>630&&((this.distance/30) % 1 == 0)&&this.asteroid.x<-this.asteroidsWidth) {
+    //asteroid
+    if (this.distance>630&&((this.distance/330) % 1 == 0)&&this.asteroid.x<-this.asteroidsWidth) {
 	  this.asteroid.revive(1);
 	  this.asteroid.y = Math.floor(Math.random() * (this.height-this.asteroidsHeight)) + 1;
 	  this.asteroid.x = (Math.random() * 900) + this.width+100; //Right out of screen
@@ -305,9 +308,10 @@ create: function() {
 	//chocos
 	this.chocos.forEach(function(choco){
 	 if (choco.x<-this.chocosWidth){
-	   choco.revive(1); 
+	   choco.revive(1);
 	   choco.frame = Math.floor((Math.random() * this.chocosTypes) + 1);//Random frame    
        choco.x = (Math.random() * 900) + this.width+100; //Right out of screen
+       choco.y = Math.floor(Math.random() * (this.height-this.chocosHeight)) + 1;
        choco.body.velocity.x = 1-(Math.random()*((this.chocosBaseSpeed*2)-this.chocosBaseSpeed+1)+this.chocosBaseSpeed);
 	   }	
 	},this);
@@ -338,7 +342,7 @@ damage: function(){
   this.player.damage((this.planetsBaseSpeed/70));
   this.updateHealthBar();
 
- if (this.player.health<0)
+ if (this.player.health<=0)
  {
 	this.playerExplosion = this.game.add.sprite(this.player.x, this.player.y, 'explosion');
     this.playerExplosion.anchor.setTo(0.5, 0.5);
@@ -416,8 +420,33 @@ collectChoco:function(choco){
 	this.collectedChocosText.text = 'Σοκολάτες: '+this.pad(this.collectedChocos,8);
 },
 BlackHoleEatSprite: function(blackhole,victim){
- game.add.tween(victim).to( { angle: 360 }, 400, Phaser.Easing.Linear.None, true);
-  game.add.tween(victim.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Linear.None, true);
+ 
+ var keepXvel = victim.body.velocity.x;
+ var keepYpos = victim.y;
+ this.game.physics.arcade.moveToObject(victim, blackhole, 500);
+ var rotTween = game.add.tween(victim).to( { angle: 360 }, 400, Phaser.Easing.Linear.None, true);
+ var shrincTween = game.add.tween(victim.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Linear.None, true)
+ .onComplete.add(function(){
+     game.tweens.remove(rotTween);
+     game.tweens.remove(shrincTween);
+	 
+	 if (victim.key=="ufo") {
+		 victim.kill();
+		 victim.health=-100;
+		 this.damage(); 
+		 } else {
+	 
+	 victim.x=-1000;//left out;
+	 victim.y = keepYpos;
+	 victim.scale = {x:1,y:1};
+	 victim.revive();
+	 victim.body.velocity.setTo(keepXvel, 0);
+      }
+
+	 },
+ this);
+
+ 
 },
 jump: function() {  
     // Add a vertical velocity to the ufo
