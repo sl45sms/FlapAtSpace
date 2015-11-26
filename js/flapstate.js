@@ -11,7 +11,7 @@ var flapState = {
     planetsTypes:8,
     blackholeWidth:230,
     blackholeHeight:260,
-    blackholeSpeed:50,
+    blackholeSpeed:150,
     chocos: [],
     chocosBaseSpeed:120,
     chocosWidth:80,
@@ -57,7 +57,7 @@ shutDown: function(){
 },
 
 create: function() {
-	console.log("on create");
+	
     //  We're going to be using physics, so enable the Arcade Physics system
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
    
@@ -65,20 +65,20 @@ create: function() {
    
     this.game.stage.backgroundColor = '#111';
     //nubulu as background (place first-- oreder of sprites matters)
-    this.nubulu = this.game.add.tileSprite(0, 0, 1024, 768, 'nubulu');
+    this.nubulu = this.game.add.tileSprite(0, 0, this.width,  this.height, 'nubulu');
    
      //stars 
     this.game.globals.createStars();
     
     //blackhole above all 
-      this.blackhole = this.game.add.sprite((Math.random() * 900) + 530, 500, 'blackhole');
+      this.blackhole = this.game.add.sprite(-1000, 500, 'blackhole');
       this.game.physics.arcade.enable(this.blackhole);
       this.blackhole.animations.add('hairyblackhole');
       this.blackhole.play('hairyblackhole', 15, true, true);
       this.blackhole.body.angularVelocity=-120;  
       this.blackhole.anchor.setTo(0.5, 0.5);
       this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
-
+     // this.blackhole.x =-1000;
 
     //Bullets
     this.bullets = this.game.add.group();
@@ -144,7 +144,6 @@ create: function() {
      this.asteroid.body.angularVelocity=-100;
      this.asteroid.inputEnabled = true;
      this.asteroid.input.useHandCursor = true;
-    // this.asteroid.events.onInputDown.add(this.destroyasteroid, this);
      this.asteroid.events.onInputDown.add(this.shootBullet,this);
  
 
@@ -224,6 +223,13 @@ create: function() {
    //difficulty
    game.time.events.loop(Phaser.Timer.SECOND*5, this.updateSpeed, this);    
    
+   //cheat
+     this.cheatKey = this.game.input.keyboard.addKey(Phaser.KeyCode.C);
+   this.cheatKey.onDown.add(function(){
+   	 this.player.damage(-20);
+     this.updateHealthBar();
+	   
+	   }, this); 
 
 
  },
@@ -239,20 +245,15 @@ create: function() {
     
     this.game.physics.arcade.overlap(this.blackhole,[this.chocos,this.planets,this.asteroids,this.shield,this.slowdown,this.player], this.BlackHoleEatSprite, null, this);                                
   
-
-
-
-
     this.game.physics.arcade.overlap(this.bullets, this.asteroids, this.destroyasteroid, null, this);
 	
 	
 	if (this.player.health>this.player.maxHealth) this.player.frame = 1; else 
 	    if (this.ondamage-->0) this.player.frame = 2; else  
 	         this.player.frame = 0;
-	//console.log(this.ondamage);
 	
    //backhole
-	if (this.distance>1200&&((this.distance/720) % 1 == 0)&&this.blackhole.x<-this.blackholeWidth) {
+	if (this.distance>10&&((this.distance/120) % 1 == 0)&&this.blackhole.x<-this.blackholeWidth) {
 	  this.blackhole.y = Math.floor(Math.random() * (this.height-this.blackholeHeight)) + 1;
 	  this.blackhole.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
@@ -260,13 +261,12 @@ create: function() {
 
 	//shield
 	if (this.distance>0&&((this.distance/110) % 1 == 0)&&this.shield.x<-this.powerUpsWidth) {
-	  //console.log(this.shield.x,this.powerups.children[0].x,this.powerups.getAt(0).x);
 	  this.shield.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
 	  this.shield.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.shield.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
     
-    //slowdown
+    //slowdown //TODO based on updateSpeed
 	if (this.distance>880&&((this.distance/630) % 1 == 0)&&this.slowdown.x<-this.powerUpsWidth) {
 	  this.slowdown.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
@@ -280,11 +280,12 @@ create: function() {
 	  this.asteroid.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.asteroid.body.velocity.x = 1-(Math.random()*((this.asteroidsSpead*2)-this.asteroidsSpead+1)+this.asteroidsSpead);
      }
-     
+    //planets 
 	this.planets.forEach(function(planet) {
 		
 	if (planet.x<-this.planetsWidth) 
 	{
+	   planet.revive(1);	
        planet.frame = Math.floor((Math.random() * this.planetsTypes) + 1);//Random frame    
        planet.x = (Math.random() * 900) + this.width+100; //Right out of screen
        planet.body.velocity.x = 1-(Math.random()*((this.planetsBaseSpeed*2)-this.planetsBaseSpeed+1)+this.planetsBaseSpeed);//Random speed based on time
@@ -423,24 +424,32 @@ BlackHoleEatSprite: function(blackhole,victim){
  
  var keepXvel = victim.body.velocity.x;
  var keepYpos = victim.y;
+ var keepangularVelocity = victim.body.angularVelocity;
+ var keepAngle = victim.angle;
+ var keepRotate = keepRotate;
+ 
  this.game.physics.arcade.moveToObject(victim, blackhole, 500);
  var rotTween = game.add.tween(victim).to( { angle: 360 }, 400, Phaser.Easing.Linear.None, true);
- var shrincTween = game.add.tween(victim.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Linear.None, true)
+ var shrinkTween = game.add.tween(victim.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Linear.None, true)
  .onComplete.add(function(){
      game.tweens.remove(rotTween);
-     game.tweens.remove(shrincTween);
+     game.tweens.remove(shrinkTween);
 	 
 	 if (victim.key=="ufo") {
 		 victim.kill();
 		 victim.health=-100;
-		 this.damage(); 
+		 this.damage();
 		 } else {
 	 
-	 victim.x=-1000;//left out;
+	 victim.x= (Math.random() * 900) + this.width+100; //Right out of screen          //-1000;//left out;
 	 victim.y = keepYpos;
 	 victim.scale = {x:1,y:1};
 	 victim.revive();
 	 victim.body.velocity.setTo(keepXvel, 0);
+	 victim.body.angularVelocity=keepangularVelocity;
+     victim.body.rotate=keepRotate;
+     victim.angle = keepAngle;//???
+   
       }
 
 	 },
