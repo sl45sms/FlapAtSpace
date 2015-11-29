@@ -78,33 +78,26 @@ create: function() {
       this.blackhole.body.angularVelocity=-120;  
       this.blackhole.anchor.setTo(0.5, 0.5);
       this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
-     // this.blackhole.x =-1000;
 
     //Bullets
     this.bullets = this.game.add.group();
       for(var i = 0; i < this.number_of_bullets; i++) {
-        // Create each bullet and add it to the group.
         var bullet = this.game.add.sprite(0, 0, 'bullet');
         this.bullets.add(bullet);
-        // Set its pivot point to the center of the bullet
-        bullet.anchor.setTo(0, 0.5);
-        // Enable physics on the bullet
-        this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
-        // Set its initial state to "dead".
-        bullet.kill();
+         bullet.anchor.setTo(0, 0.5);
+         this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
+         bullet.kill();
     }
   
      //Planets
     this.planets = this.game.add.group();
-    
-    var maxplanets=Math.floor(this.height/this.planetsHeight);
-    var planetsPosheight=this.height/maxplanets;
+    this.maxplanets=Math.floor(this.height/this.planetsHeight);
+    this.planetsPosheight=this.height/this.maxplanets;
 
-    for (var i = 0; i < maxplanets; i++)
+    for (var i = 0; i < this.maxplanets; i++)
     {
-        //  This creates a new Phaser.Sprite instance within the group
-        //  It will be randomly placed within the world
-      var planet =  this.planets.create((Math.random() * 900) + 530, i * planetsPosheight, 'planets',Math.floor(Math.random() * this.planetsTypes));
+      var planet =  this.planets.create((Math.random() * 900) + 530, i * this.planetsPosheight, 'planets',Math.floor(Math.random() * this.planetsTypes));
+      planet.num = i; //to keep y pos at update
       this.game.physics.arcade.enable(planet);
       planet.body.velocity.x = 1-(Math.random()*((this.planetsBaseSpeed*2)-this.planetsBaseSpeed+1)+this.planetsBaseSpeed);
     }
@@ -136,15 +129,15 @@ create: function() {
     }
 
      //asteroids
-     this.asteroids = this.game.add.group();  
-     this.asteroid = this.asteroids.create((Math.random() * 900) + 530, -1000 , 'asteroid',1);
+     //this.asteroids = this.game.add.group();  
+     this.asteroid = this.game.add.sprite((Math.random() * 900) + 530, -1000 , 'asteroid',1);
      this.game.physics.arcade.enable(this.asteroid);
      this.asteroid.anchor.setTo(0.5, 0.5);
      this.asteroid.body.velocity.x = 1-(Math.random()*((this.asteroidsSpead*2)-this.asteroidsSpead+1)+this.asteroidsSpead);
      this.asteroid.body.angularVelocity=-100;
      this.asteroid.inputEnabled = true;
      this.asteroid.input.useHandCursor = true;
-     this.asteroid.events.onInputDown.add(this.shootBullet,this);
+     this.asteroid.events.onInputDown.add(this.shootAsteroid,this);
  
 
  
@@ -236,27 +229,24 @@ create: function() {
 
  update: function() {
 
-	   
-   	this.game.physics.arcade.overlap(this.player, this.planets, this.damage, null, this);
-   	this.game.physics.arcade.overlap(this.player, this.wall, this.damage, null, this);   	
-	this.game.physics.arcade.overlap(this.player, this.asteroids, this.hitasteroid, null, this);
+	this.game.physics.arcade.overlap(this.blackhole,[this.chocos,this.planets,this.asteroid,this.shield,this.slowdown,this.player,this.bullets], this.blackholeEatSprite, null, this);   
+   	this.game.physics.arcade.overlap(this.player, [this.planets,this.wall], this.damage, null, this);
+   	this.game.physics.arcade.overlap(this.player, this.asteroid, this.hitasteroid, null, this);
 	this.game.physics.arcade.overlap(this.player, this.shield, this.fixdamage, null, this);
 	this.game.physics.arcade.overlap(this.player, this.slowdown, this.slowSpeed, null, this);                                
-    
-    this.game.physics.arcade.overlap(this.blackhole,[this.chocos,this.planets,this.asteroids,this.shield,this.slowdown,this.player], this.BlackHoleEatSprite, null, this);                                
-  
-    this.game.physics.arcade.overlap(this.bullets, this.asteroids, this.destroyasteroid, null, this);
+    this.game.physics.arcade.overlap(this.bullets, this.asteroid, this.destroyasteroid, null, this);
 	
-	
+	//choose shield, dammage frame
 	if (this.player.health>this.player.maxHealth) this.player.frame = 1; else 
 	    if (this.ondamage-->0) this.player.frame = 2; else  
 	         this.player.frame = 0;
 	
    //backhole
-	if (this.distance>10&&((this.distance/120) % 1 == 0)&&this.blackhole.x<-this.blackholeWidth) {
+	if (this.distance>2400&&((this.distance/1200) % 1 == 0)&&this.blackhole.x<-this.blackholeWidth) {
 	  this.blackhole.y = Math.floor(Math.random() * (this.height-this.blackholeHeight)) + 1;
 	  this.blackhole.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
+      this.blackHoleWarning();
      }
 
 	//shield
@@ -274,23 +264,24 @@ create: function() {
      }
     
     //asteroid
-    if (this.distance>630&&((this.distance/330) % 1 == 0)&&this.asteroid.x<-this.asteroidsWidth) {
+    if (this.distance>630&&((this.distance/330) % 1 == 0)&&(this.asteroid.x<-this.asteroidsWidth||this.asteroid.health<=0)) {
 	  this.asteroid.revive(1);
 	  this.asteroid.y = Math.floor(Math.random() * (this.height-this.asteroidsHeight)) + 1;
 	  this.asteroid.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.asteroid.body.velocity.x = 1-(Math.random()*((this.asteroidsSpead*2)-this.asteroidsSpead+1)+this.asteroidsSpead);
+      this.asteroid.body.angularVelocity=-100;
      }
+     
     //planets 
-	this.planets.forEach(function(planet) {
-		
-	if (planet.x<-this.planetsWidth) 
+	this.planets.forEach(function(planet) {		
+	if (planet.x<-this.planetsWidth||planet.health<=0) 
 	{
-	   planet.revive(1);	
+	   planet.revive(1);
        planet.frame = Math.floor((Math.random() * this.planetsTypes) + 1);//Random frame    
        planet.x = (Math.random() * 900) + this.width+100; //Right out of screen
+       planet.y = planet.num * this.planetsPosheight;
        planet.body.velocity.x = 1-(Math.random()*((this.planetsBaseSpeed*2)-this.planetsBaseSpeed+1)+this.planetsBaseSpeed);//Random speed based on time
-    
-     
+       
      //Add and update the score
       if (this.player.health>0) this.distance += 10;
          this.distanceText.text = 'Απόσταση: ' + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';
@@ -300,16 +291,16 @@ create: function() {
      //todo ena megalo bos sta 19500
      
      //TODO if score = 20000 then "Paradothikan ta sokolatakia!"
-      }
-	},this);
+    }
+    },this);
 	
 	//bullets
 	 this.bullets.forEachAlive(this.rotateBullets,this);
 	
 	//chocos
 	this.chocos.forEach(function(choco){
-	 if (choco.x<-this.chocosWidth){
-	   choco.revive(1);
+	 if ((choco.x<-this.chocosWidth||choco.health<=0)){
+	   choco.revive();
 	   choco.frame = Math.floor((Math.random() * this.chocosTypes) + 1);//Random frame    
        choco.x = (Math.random() * 900) + this.width+100; //Right out of screen
        choco.y = Math.floor(Math.random() * (this.height-this.chocosHeight)) + 1;
@@ -334,12 +325,11 @@ updateSpeed:function(){
 },
 hitasteroid:function(){
 this.player.health=0;
-	
 this.damage();
 },
 damage: function(){
 
-  this.ondamage=10;
+  this.ondamage=10;//for damage frame
   this.player.damage((this.planetsBaseSpeed/70));
   this.updateHealthBar();
 
@@ -370,12 +360,12 @@ slowSpeed:function(){
     if (this.chocosBaseSpeed>220) 
       this.chocosBaseSpeed-=20;
 },
-rotateBullets: function(bullet) { 
+rotateBullets: function(bullet) { //todo generic not only asteroid
 	bullet.rotation = this.game.physics.arcade.angleBetween(bullet, this.asteroid);
 	this.game.physics.arcade.moveToObject(bullet, this.asteroid, this.bullet_speed);
 	if (bullet.x<this.player.x) bullet.kill();
 },
-shootBullet:function(){
+shootBullet:function(victim){
 	// Enforce a short delay between shots by recording
     // the time that each bullet is shot and testing if
     // the amount of time since the last shot is more than
@@ -396,17 +386,20 @@ shootBullet:function(){
         bullet.angle = this.player.angle;
         this.game.physics.arcade.velocityFromAngle(bullet.angle - 90, this.bullet_speed, bullet.body.velocity);
         bullet.body.velocity.x += this.player.body.velocity.x;
-        this.game.physics.arcade.moveToObject(bullet, this.asteroid, this.bullet_speed);
+        this.game.physics.arcade.moveToObject(bullet, victim, this.bullet_speed);
 },
-destroyasteroid:function(bullet){
+shootAsteroid:function(){
+	this.shootBullet(this.asteroid);
+},
+destroyasteroid:function(asteroid,bullet){
 	bullet.kill();
-	this.asteroid.kill();
-	this.asteroidExplosion = this.game.add.sprite(this.asteroid.x, this.asteroid.y, 'explosion');
-    this.asteroidExplosion.anchor.setTo(0.5, 0.5);
-    this.asteroidExplosion.rotation=this.asteroid.rotation;
-    this.asteroidExplosion.animations.add('boom');
-    this.asteroidExplosion.play('boom', 15, false, true);
-	this.asteroid.x=-this.asteroidsWidth-1;//needed for update function
+	asteroid.kill();
+	asteroidExplosion = this.game.add.sprite(this.asteroid.x, this.asteroid.y, 'explosion');
+    asteroidExplosion.anchor.setTo(0.5, 0.5);
+    asteroidExplosion.rotation=this.asteroid.rotation;
+    asteroidExplosion.animations.add('boom');
+    asteroidExplosion.play('boom', 15, false, true);
+	asteroid.x=-this.asteroidsWidth-1;//needed for update function
 },
 collectChoco:function(choco){
 	choco.kill();
@@ -420,14 +413,27 @@ collectChoco:function(choco){
 	choco.x = -this.chocosWidth-1;
 	this.collectedChocosText.text = 'Σοκολάτες: '+this.pad(this.collectedChocos,8);
 },
-BlackHoleEatSprite: function(blackhole,victim){
+blackHoleWarning: function(){
+var warning=this.game.add.bitmapText(this.game.world.centerX, this.game.height/2, 'introFonts', "Προσοχή! Μαύρη Τρύπα", 78);
+warning.anchor.setTo(0.5, 0.5);
+warning.tint = 0xff2020;
+
+this.game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+warning.destroy();
+}
+, this).autoDestroy = true;
+
+},
+blackholeEatSprite: function(blackhole,victim){
  
- var keepXvel = victim.body.velocity.x;
- var keepYpos = victim.y;
- var keepangularVelocity = victim.body.angularVelocity;
- var keepAngle = victim.angle;
- var keepRotate = keepRotate;
  
+ 
+// var keepXvel = victim.body.velocity.x;
+ //var keepangularVelocity = victim.body.angularVelocity;
+ //var keepAngle = victim.angle;
+ //var keepRotation = victim.rotation;
+
+
  this.game.physics.arcade.moveToObject(victim, blackhole, 500);
  var rotTween = game.add.tween(victim).to( { angle: 360 }, 400, Phaser.Easing.Linear.None, true);
  var shrinkTween = game.add.tween(victim.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Linear.None, true)
@@ -440,15 +446,13 @@ BlackHoleEatSprite: function(blackhole,victim){
 		 victim.health=-100;
 		 this.damage();
 		 } else {
-	 
-	 victim.x= (Math.random() * 900) + this.width+100; //Right out of screen          //-1000;//left out;
-	 victim.y = keepYpos;
+	 victim.x= -1000;//left out;
 	 victim.scale = {x:1,y:1};
-	 victim.revive();
-	 victim.body.velocity.setTo(keepXvel, 0);
-	 victim.body.angularVelocity=keepangularVelocity;
-     victim.body.rotate=keepRotate;
-     victim.angle = keepAngle;//???
+	 victim.revive(1);
+	 victim.body.velocity.setTo(0, 0);
+	 victim.body.angularVelocity=0;
+     victim.rotation=0;
+     victim.angle = 0;   
    
       }
 
