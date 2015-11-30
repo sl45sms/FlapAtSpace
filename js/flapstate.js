@@ -283,8 +283,8 @@ create: function() {
 	  this.shield.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
     
-    //slowdown //TODO based on updateSpeed
-	if (this.distance>880&&((this.distance/630) % 1 == 0)&&this.slowdown.x<-this.powerUpsWidth) {
+    //slowdown // based on updateSpeed check...
+	if (this.distance>880&&this.planetsBaseSpeed>=800&&this.slowdown.x<-this.powerUpsWidth) {
 	  this.slowdown.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
@@ -357,7 +357,7 @@ this.damage();
 damage: function(){
 
   this.ondamage=10;//for damage frame
-  this.player.damage((this.planetsBaseSpeed/70));
+  this.player.damage((this.planetsBaseSpeed/80));
   this.updateHealthBar();
 
  if (this.player.health<=0)
