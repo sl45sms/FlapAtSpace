@@ -12,6 +12,9 @@ var flapState = {
     blackholeWidth:230,
     blackholeHeight:260,
     blackholeSpeed:150,
+    alienWidth:120,
+    alienHeight:80,
+    alienSpeed:300,
     chocos: [],
     chocosBaseSpeed:120,
     chocosWidth:80,
@@ -140,8 +143,17 @@ create: function() {
      this.asteroid.events.onInputDown.add(this.shootAsteroid,this);
  
 
- 
- 
+   //alien
+   this.alien = this.game.add.sprite((Math.random() * 900) + 530,500,'alienufo');
+   this.game.physics.arcade.enable(this.alien);
+   this.alien.frame = 0; 
+   this.alien.maxHealth = 1000;
+   this.alien.health = this.alien.maxHealth;
+   this.alien.anchor.setTo(-0.2, 0.5); 
+   this.alien.alarms = this.alien.animations.add('alarms');
+   this.alien.animations.play('alarms', 30, true);
+   this.alien.body.velocity.x = 1-(Math.random()*((this.alienSpeed*2)-this.alienSpeed+1)+this.alienSpeed);
+   
    //Player
    this.player = this.game.add.sprite(80, 500, 'ufo');
    //  We need to enable physics on the player
@@ -228,7 +240,15 @@ create: function() {
  },
 
  update: function() {
-
+    //TODO is realy needed? or can disable for speed
+   // this.game.physics.arcade.collide(this.planets, this.chocos);
+    this.game.physics.arcade.collide(this.chocos, this.chocos);
+    this.game.physics.arcade.collide([this.chocos,this.planets], this.powerups);
+    this.game.physics.arcade.collide(this.alien, this.planets,this.allienColide);
+     
+     
+     
+     
 	this.game.physics.arcade.overlap(this.blackhole,[this.chocos,this.planets,this.asteroid,this.shield,this.slowdown,this.player,this.bullets], this.blackholeEatSprite, null, this);   
    	this.game.physics.arcade.overlap(this.player, [this.planets,this.wall], this.damage, null, this);
    	this.game.physics.arcade.overlap(this.player, this.asteroid, this.hitasteroid, null, this);
@@ -247,6 +267,13 @@ create: function() {
 	  this.blackhole.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
       this.blackHoleWarning();
+     }
+
+   //alien
+   	if (this.distance>0&&((this.distance/30) % 1 == 0)&&this.alien.x<-this.alienWidth) {
+	  this.alien.y = Math.floor(Math.random() * (this.height-this.alienHeight)) + 1;
+	  this.alien.x = (Math.random() * 900) + this.width+100; //Right out of screen
+	  this.alien.body.velocity.x = 1-(Math.random()*((this.alienSpeed*2)-this.alienSpeed+1)+this.alienSpeed);
      }
 
 	//shield
@@ -466,6 +493,20 @@ jump: function() {
     this.player.body.velocity.y = -350;
     // Jump animation
     this.game.add.tween(this.player).to({angle: -20}, 100).start();
+},
+allienColide: function(alien,planet){
+/*
+	game.physics.arcade.moveToXY(
+    alien, 
+    alien.x-100, 
+    Math.floor(Math.random() * (this.height-this.alienHeight)) + 1, 
+    300 ,
+    500 
+);
+*/
+alien.x+=100;
+//TODO na koitaei pou exei xoro pano h kato kai analogos na apofasizei 
+
 },
 updateHealthBar:function(){
  //update health bar

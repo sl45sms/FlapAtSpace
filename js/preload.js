@@ -38,7 +38,8 @@ var preLoad={
             this.game.load.spritesheet('chocos', 'assets/flap/chocos.png', 160, 180);
             this.game.load.spritesheet('whirlpool', 'assets/flap/whirlpool.png', 140, 130);
             this.game.load.spritesheet('explosion', 'assets/flap/explosion.png', 128, 128);   
-            this.game.load.spritesheet('ufo', 'assets/flap/ufo_sprite.png', 120, 80,3);      
+            this.game.load.spritesheet('ufo', 'assets/flap/ufo_sprite.png', 120, 80,3); 
+            this.game.load.spritesheet('alienufo', 'assets/flap/alienufo_sprite.png', 120, 80, 4);      
             this.game.load.spritesheet('planets', 'assets/flap/hjm-planet-sheet_3.png', this.planetsWidth, this.planetsHeight,this.planetsTypes,5,15);
 
 
