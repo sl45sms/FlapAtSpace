@@ -154,12 +154,17 @@ create: function() {
    this.alien.animations.play('alarms', 30, true);
    this.alien.body.velocity.x = 1-(Math.random()*((this.alienSpeed*2)-this.alienSpeed+1)+this.alienSpeed);
    
+   
+   this.alien.body.collideWorldBounds = true;
+	this.alien.body.bounce.setTo(1, 0);
+   
+   
    //Player
    this.player = this.game.add.sprite(80, 500, 'ufo');
    //  We need to enable physics on the player
    this.game.physics.arcade.enable(this.player);
    //  Player physics properties.
-   this.player.body.bounce.y = 0;
+   //this.player.body.bounce.y = 0;
    this.player.body.gravity.y = 1000;
    this.player.body.collideWorldBounds = true;
  
@@ -240,12 +245,15 @@ create: function() {
  },
 
  update: function() {
+   
+    //TODO move background slowly (but image must change to support the effect)
+   // this.nubulu.tilePosition.x-=2; 
     //TODO is realy needed? or can disable for speed
    // this.game.physics.arcade.collide(this.planets, this.chocos);
     this.game.physics.arcade.collide(this.chocos, this.chocos);
     this.game.physics.arcade.collide([this.chocos,this.planets], this.powerups);
-    this.game.physics.arcade.collide(this.alien, this.planets,this.allienColide);
-     
+    //this.game.physics.arcade.collide(this.alien, this.planets,this.allienColide);
+     this.game.physics.arcade.collide(this.alien, this.planets);
      
      
      
@@ -504,7 +512,7 @@ allienColide: function(alien,planet){
     500 
 );
 */
-alien.x+=100;
+//alien.x+=100;
 //TODO na koitaei pou exei xoro pano h kato kai analogos na apofasizei 
 
 },
