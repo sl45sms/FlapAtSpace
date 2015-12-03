@@ -30,7 +30,8 @@ var preLoad={
             this.game.load.image('shield', 'assets/flap/shield.png');
             this.game.load.image('slowdown', 'assets/flap/slowdown.png');            
             this.game.load.image('asteroid', 'assets/flap/asteroid.png'); 
-            this.game.load.image('bullet', 'assets/flap/bullets.png'); 
+            this.game.load.image('bullet', 'assets/flap/bullets.png');
+            this.game.load.image('alienbullet', 'assets/flap/alienbullet.png');            
             this.game.load.image('transparent', 'assets/flap/transparent.png');             
             
             
