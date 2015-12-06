@@ -1,24 +1,35 @@
-var gameOver={
+var gameSuccess={
 	init: function(thisgame){ //You can pass any number of init parameters
      this.game=thisgame;
      this.now = this.game.time.now;  
      this.clickdelay=2000;
+     this.ufo={};
   },
 create: function(){
+
+	    this.background = this.add.sprite(0, 0, 'preloaderBackground');
+	  	    
 		this.gameTitle = this.game.add.sprite(this.game.world.centerX,120,"gametitle");
 		this.gameTitle.anchor.setTo(0.5,0.5);
 		this.playButton = this.game.add.button(this.game.world.centerX,630,"taptoplay",this.playTheGame,this);
 		this.playButton.anchor.setTo(0.5,0.5);
-
+  
 
         var ypos=(this.gameTitle.y+this.gameTitle.height)+90;
-        this.gameOverText = game.add.bitmapText(this.game.world.centerX, ypos+1,'introFonts','Έχασες!', 64);    
-        this.gameOverText.anchor.set(0.5,0.5);
-        this.gameOverText.tint = 0xFF9677;
-        this.gameOverAgain = game.add.bitmapText(this.game.world.centerX, ypos+1+this.gameOverText.height+10,'introFonts','Πάμε παλί απο την αρχή;', 32);    
-        this.gameOverAgain.anchor.set(0.5,0.5);
+        this.successText = game.add.bitmapText(this.game.world.centerX, ypos+1,'introFonts','Τα κατάφερες!', 64);    
+        this.successText.anchor.set(0.5,0.5);
+        this.successText.tint = 0xFF9677;
+        this.successAgain = game.add.bitmapText(this.game.world.centerX, ypos+1+this.successText.height+10,'introFonts','Πάμε παλί απο την αρχή;', 32);    
+        this.successAgain.anchor.set(0.5,0.5);
+	
+	 this.player = this.game.add.sprite(80, 500, 'ufo');
+     this.game.physics.arcade.enable(this.player);
+     this.player.body.gravity.y = 1000;
+     this.player.body.collideWorldBounds = true;
+     this.player.body.bounce.set(1,1);
+     this.player.body.velocity.setTo(400,400);      
 
-
+	
 	
     //key mouse touch playTheGame    
    this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -28,16 +39,18 @@ create: function(){
 	},
 	update:function(){
 	    this.game.globals.updateStars();
-
+	    
 	},
 	playTheGame: function(){
        if (this.game.time.now>this.now+this.clickdelay){
        this.gameTitle.kill();
-       this.gameOverText.kill();
-       this.gameOverAgain.kill();
+       this.successText.kill();
+       this.successAgain.kill();
        this.playButton.kill();
+       this.player.kill();
 	   game.state.start("flapState",true,false,this.game);
-	 }
+   }
+	
 	}
 	
 	}

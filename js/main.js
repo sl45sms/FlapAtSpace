@@ -1,8 +1,5 @@
 (function () {
 
-
-
-
 game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'phaserCanvas');
 
 game.state.add('Boot', Boot);
@@ -10,6 +7,7 @@ game.state.add('preLoad', preLoad);
 game.state.add('introState', introState);
 game.state.add('flapState', flapState);
 game.state.add('gameOver', gameOver);
+game.state.add('gameSuccess', gameSuccess);
 
 game.globals={
     //score: 0,
@@ -25,18 +23,16 @@ game.globals={
 	createStars:function(){
 	this.stars=[];
 		
-	//console.log("on stars create",this.stars,this.star,this.starfield1);	
-
 	//Star field
-   	
-   	// 
+	
+
    	this.star = game.make.sprite(0, 0, 'star');
 	this.starfield1 = game.add.renderTexture(this.width, this.height, 'starfield1');
 	this.starfield2 = game.add.renderTexture(this.width, this.height, 'starfield2');
 	this.starfield3 = game.add.renderTexture(this.width, this.height, 'starfield3');
 
 
-  // stage.addChild(sprite)
+
    game.add.sprite(0, 0, this.starfield1);
    game.add.sprite(0, 0, this.starfield2);
    game.add.sprite(0, 0, this.starfield3);
@@ -72,7 +68,7 @@ updateStars:function(){
   for (var i = 0; i < 300; i++)
 	{
 		
-		//if (i==150)console.log("AAAAAAAAAAAA");
+
 		//	Update the stars y position based on its speed
 		this.stars[i].x -= this.stars[i].speed;
 

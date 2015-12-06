@@ -326,7 +326,7 @@ create: function() {
      }
     
     //slowdown // based on updateSpeed...
-	if (this.planetsBaseSpeed>=350&&this.slowdown.x<-this.powerUpsWidth) {
+	if (this.planetsBaseSpeed>=420&&this.slowdown.x<-this.powerUpsWidth) {
 	  this.slowdown.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
@@ -348,8 +348,7 @@ create: function() {
       if (this.player.health>0) this.distance += 10;
          this.distanceText.text = 'Απόσταση: ' + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';
      
-     //TODO if score =5000 tote ena bos kathe 2500
-     
+    
      //todo ena megalo bos sta 19500
      
      //TODO if score = 20000 then "Paradothikan ta sokolatakia!"
@@ -379,6 +378,8 @@ create: function() {
 //Slowly rotate the ufo downward, up to a certain point.
         if (this.player.angle < 20)
             this.player.angle += 1;
+
+    if (this.distance>=this.maxDistance) this.success();
 
 },
 render: function(){
@@ -469,7 +470,7 @@ shootAlien:function(){
 },
 destroyalien:function(alien,bullet){
 	bullet.kill();
-	alien.damage(300);//4 times
+	alien.damage(300);//4 times, hit alien to destroy
 	this.alienondamage=10;//for damage tint
 	if (alien.health<=0){
 	alien.kill();
@@ -581,6 +582,16 @@ restartGame: function() {
 },
 pad: function(num,size){
 return ('00000000'+num).substr(-size);
+},
+success:function(){
+	this.distance=0;
+    this.planetsBaseSpeed=80;
+    this.chocosBaseSpeed=120;  
+    this.ondamage=0;
+    this.alienondamage=0;
+    this.player.kill();
+    this.alien.kill();
+	this.game.state.start('gameSuccess',false,false,this.game);
 }
 
 };
