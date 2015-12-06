@@ -1,5 +1,7 @@
 trash
 server
+mobile
+gulpfile.js
 *.xcf
 *.svg
 *.bkp
