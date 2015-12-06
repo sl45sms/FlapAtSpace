@@ -50,8 +50,6 @@ init: function(thisgame){ //You can pass any number of init parameters
      
      this.width=this.game.globals.width;
      this.height=this.game.globals.height;
-     
-     
 
   },
 
@@ -66,10 +64,8 @@ create: function() {
     //  We're going to be using physics, so enable the Arcade Physics system
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
    
-   
-   
     this.game.stage.backgroundColor = '#111';
-    //nubulu as background (place first-- oreder of sprites matters)
+    //nubulu as background (place first-- order of sprites maters)
     this.nubulu = this.game.add.tileSprite(0, 0, this.width,  this.height, 'nubulu');
    
      //stars 
@@ -86,27 +82,27 @@ create: function() {
       this.blackhole.body.immovable = true;
 
     //Bullets
-    this.bullets = this.game.add.group();
+     this.bullets = this.game.add.group();
       for(var i = 0; i < this.number_of_bullets; i++) {
         var bullet = this.game.add.sprite(0, 0, 'bullet');
         this.bullets.add(bullet);
          bullet.anchor.setTo(0, 0.5);
          this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
          bullet.kill();
-    }
+        }
   
-   //alien bullet
-   this.alienbullet = this.game.add.sprite(-1000, 500, 'alienbullet');
-   this.game.physics.arcade.enable(this.alienbullet);
-   this.alienbullet.checkWorldBounds = true;
-   this.alienbullet.outOfBoundsKill = true;
-   this.alienbullet.kill();
+     //alien bullet
+     this.alienbullet = this.game.add.sprite(-1000, 500, 'alienbullet');
+     this.game.physics.arcade.enable(this.alienbullet);
+     this.alienbullet.checkWorldBounds = true;
+     this.alienbullet.outOfBoundsKill = true;
+     this.alienbullet.kill();
    
      
      //Planets
-    this.planets = this.game.add.group();
-    this.maxplanets=Math.floor(this.height/this.planetsHeight);
-    this.planetsPosheight=this.height/this.maxplanets;
+     this.planets = this.game.add.group();
+     this.maxplanets=Math.floor(this.height/this.planetsHeight);
+     this.planetsPosheight=this.height/this.maxplanets;
 
     for (var i = 0; i < this.maxplanets; i++)
     {
@@ -128,7 +124,7 @@ create: function() {
       this.slowdown = this.powerups.create((Math.random() * 900) + 530, -1000, 'slowdown',1);
       this.game.physics.arcade.enable(this.slowdown);
       this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
-      this.shield.body.immovable = true;
+      this.slowdown.body.immovable = true;
     
     
      //chocos
@@ -157,23 +153,23 @@ create: function() {
      this.asteroid.events.onInputDown.add(this.shootAsteroid,this);
      this.asteroid.body.immovable = true; 
 
-   //alien
-   this.alien = this.game.add.sprite((Math.random() * 900) + 530,-1000,'alienufo');
-   this.game.physics.arcade.enable(this.alien);
-   this.alien.frame = 0; 
-   this.alien.maxHealth = 1000;
-   this.alien.health = this.alien.maxHealth;
-   this.alien.anchor.setTo(-0.2, 0.5); 
-   this.alien.alarms = this.alien.animations.add('alarms');
-   this.alien.animations.play('alarms', 30, true);
-   this.alien.body.velocity.setTo(this.alienSpeed,this.alienSpeed)
-   this.alien.body.bounce.set(1,1);
-   this.alien.inputEnabled = true;
-   this.alien.input.useHandCursor = true;
-   this.alien.events.onInputDown.add(this.shootAlien,this);
-   this.alien.body.collideWorldBounds = true;
-   this.alien.health=0;
-   this.alien.kill();
+     //alien
+     this.alien = this.game.add.sprite((Math.random() * 900) + 530,-1000,'alienufo');
+     this.game.physics.arcade.enable(this.alien);
+     this.alien.frame = 0; 
+     this.alien.maxHealth = 1000;
+     this.alien.health = this.alien.maxHealth;
+     this.alien.anchor.setTo(-0.2, 0.5); 
+     this.alien.alarms = this.alien.animations.add('alarms');
+     this.alien.animations.play('alarms', 30, true);
+     this.alien.body.velocity.setTo(this.alienSpeed,this.alienSpeed)
+     this.alien.body.bounce.set(1,1);
+     this.alien.inputEnabled = true;
+     this.alien.input.useHandCursor = true;
+     this.alien.events.onInputDown.add(this.shootAlien,this);
+     this.alien.body.collideWorldBounds = true;
+     this.alien.health=0;
+     this.alien.kill();
 
    
    
@@ -188,7 +184,7 @@ create: function() {
  
   
    this.player.frame = 0; 
-   this.player.maxHealth = 100000000;//TODO play nice...return to 1000
+   this.player.maxHealth = 1000;
    this.player.health = this.player.maxHealth;
    this.player.anchor.setTo(-0.2, 0.5); 
    
@@ -251,15 +247,18 @@ create: function() {
    //difficulty
    game.time.events.loop(Phaser.Timer.SECOND*5, this.updateSpeed, this);    
    
-   //cheat
-     this.cheatKey = this.game.input.keyboard.addKey(Phaser.KeyCode.C);
-   this.cheatKey.onDown.add(function(){
-   	 this.player.damage(-20);
-     this.updateHealthBar();
-	   
+   //cheats
+   this.cheatKeyHealth = this.game.input.keyboard.addKey(Phaser.KeyCode.H);
+   this.cheatKeyHealth.onDown.add(function(){
+   	 this.player.damage(-300);
+     this.updateHealthBar();   
 	   }, this); 
-
-
+   this.cheatKeyDistance =  this.game.input.keyboard.addKey(Phaser.KeyCode.D);
+   this.cheatKeyDistance.onDown.add(function(){
+   	     if (this.player.health>0) this.distance += 1000;
+         this.distanceText.text = 'Απόσταση: ' + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';
+	   }, this); 
+    
  },
 
  update: function() {
@@ -291,9 +290,10 @@ create: function() {
 	if (this.alienondamage-->0) this.alien.tint=0xFF0000; else this.alien.tint=0xFFFFFF;
 	
 	//TODO BOS
+	/*To bos prepei na vgenei sto distance 19000 kai na einai arketa zoriko*/
 	
    //backhole
-	if (this.distance>6400&&((this.distance/2200) % 1 == 0)&&this.blackhole.x<-this.blackholeWidth) {
+	if (this.distance>6630&&((this.distance/1320) % 1 == 0)&&this.blackhole.x<-this.blackholeWidth) {
 	  this.blackhole.y = Math.floor(Math.random() * (this.height-this.blackholeHeight)) + 1;
 	  this.blackhole.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
@@ -301,27 +301,13 @@ create: function() {
      }
 
    //alien
-   	if (this.distance>2630&&((this.distance/630) % 1 == 0)&&(this.alien.x<-this.alienWidth||this.alien.health<=0)) {
+   	if (this.distance>2630&&((this.distance/660) % 1 == 0)&&(this.alien.x<-this.alienWidth||this.alien.health<=0)) {
 	  this.alien.revive(1000);	
 	  this.alien.y = Math.floor(Math.random() * (this.height-this.alienHeight)) + 1;
 	  this.alien.x = (Math.random() * 900) + this.width+100; //Right out of screen
       this.alien.body.velocity.setTo(200,200);
      }
 
-	//shield
-	if (this.distance>220&&((this.distance/110) % 1 == 0)&&this.shield.x<-this.powerUpsWidth) {
-	  this.shield.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
-	  this.shield.x = (Math.random() * 900) + this.width+100; //Right out of screen
-	  this.shield.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
-     }
-    
-    //slowdown // based on updateSpeed check...
-	if (this.planetsBaseSpeed>=330&&this.slowdown.x<-this.powerUpsWidth) {
-	  this.slowdown.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
-	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
-	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
-     }
-    
     //asteroid
     if (this.distance>630&&((this.distance/330) % 1 == 0)&&(this.asteroid.x<-this.asteroidsWidth||this.asteroid.health<=0)) {
 	  this.asteroid.revive(1);
@@ -330,6 +316,23 @@ create: function() {
 	  this.asteroid.body.velocity.x = 1-(Math.random()*((this.asteroidsSpead*2)-this.asteroidsSpead+1)+this.asteroidsSpead);
       this.asteroid.body.angularVelocity=-100;
      }
+
+
+	//shield
+	if (this.distance>220&&((this.distance/110) % 1 == 0)&&this.shield.x<-this.powerUpsWidth) {
+	  this.shield.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
+	  this.shield.x = (Math.random() * 900) + this.width+100; //Right out of screen
+	  this.shield.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
+     }
+    
+    //slowdown // based on updateSpeed...
+	if (this.planetsBaseSpeed>=350&&this.slowdown.x<-this.powerUpsWidth) {
+	  this.slowdown.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
+	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
+	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
+     }
+    
+
      
     //planets 
 	this.planets.forEach(function(planet) {		
