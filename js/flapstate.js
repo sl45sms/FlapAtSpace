@@ -222,7 +222,7 @@ create: function() {
    this.collectedChocosText.fixedToCamera = true;
 
    //highscore
-   if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 5630);//beatme!
+   if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 631);//beatme!
    this.highscore=localStorage.getItem("highscore");
    this.highscoreText=this.game.add.bitmapText(this.world.width-180, 8, 'introFonts','Κορυφαίο: '+this.pad(this.highscore,6),26);
    this.highscoreText.tint = 0xff9040;
@@ -265,10 +265,10 @@ create: function() {
    
     //TODO move background slowly (but image must change to support the effect)
    // this.nubulu.tilePosition.x-=2; 
-    //TODO is realy needed? or can disable for speed
+    //TODO is realy needed? or can disable collides for speed
    // this.game.physics.arcade.collide(this.planets, this.chocos);
-    this.game.physics.arcade.collide(this.chocos, this.chocos);
-    this.game.physics.arcade.collide([this.chocos,this.planets], this.powerups);
+    //this.game.physics.arcade.collide(this.chocos, this.chocos);
+   // this.game.physics.arcade.collide([this.chocos,this.planets], this.powerups);
     this.game.physics.arcade.collide(this.alien, [this.planets,this.asteroid,this.shield,this.slowdown,this.blackhole],this.allienColide);
     
    
@@ -317,7 +317,6 @@ create: function() {
       this.asteroid.body.angularVelocity=-100;
      }
 
-
 	//shield
 	if (this.distance>220&&((this.distance/110) % 1 == 0)&&this.shield.x<-this.powerUpsWidth) {
 	  this.shield.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
@@ -331,9 +330,7 @@ create: function() {
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
 	  this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
-    
 
-     
     //planets 
 	this.planets.forEach(function(planet) {		
 	if (planet.x<-this.planetsWidth||planet.health<=0) 
@@ -346,12 +343,8 @@ create: function() {
        
      //Add and update the score
       if (this.player.health>0) this.distance += 10;
-         this.distanceText.text = 'Απόσταση: ' + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';
-     
-    
-     //todo ena megalo bos sta 19500
-     
-     //TODO if score = 20000 then "Paradothikan ta sokolatakia!"
+         this.distanceText.text = 'Απόσταση: ' + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';    
+
     }
     },this);
 	
@@ -412,7 +405,7 @@ damage: function(){
     this.playerExplosion.play('caboom', 15, false, true);
 
 	if (this.distance > localStorage.getItem("highscore")) {//save highscore
-                localStorage.setItem("highscore", this.distance);
+                localStorage.setItem("highscore", this.collectedChocos);
             }
     this.distance=0;
     this.planetsBaseSpeed=80;
@@ -432,7 +425,7 @@ slowSpeed:function(){
     if (this.chocosBaseSpeed>220) 
       this.chocosBaseSpeed-=20;
 },
-rotateBullets: function(bullet) { //todo generic not only asteroid
+rotateBullets: function(bullet) { 
 	bullet.rotation = this.game.physics.arcade.angleBetween(bullet, bullet.victim);
 	this.game.physics.arcade.moveToObject(bullet, bullet.victim, this.bullet_speed);
 	if (bullet.x<this.player.x) bullet.kill();
@@ -479,7 +472,7 @@ destroyalien:function(alien,bullet){
     alienExplosion.rotation=this.alien.rotation;
     alienExplosion.animations.add('boom');
     alienExplosion.play('boom', 15, false, true);
-	alien.x=-this.alienWidth-1;//needed for update function	
+	alien.x=-this.alienWidth-1;//needed(?) for update function	
 	}
 },
 destroyasteroid:function(asteroid,bullet){
@@ -526,14 +519,6 @@ warning.destroy();
 },
 blackholeEatSprite: function(blackhole,victim){
  
- 
- 
-// var keepXvel = victim.body.velocity.x;
- //var keepangularVelocity = victim.body.angularVelocity;
- //var keepAngle = victim.angle;
- //var keepRotation = victim.rotation;
-
-
  this.game.physics.arcade.moveToObject(victim, blackhole, 500);
  var rotTween = game.add.tween(victim).to( { angle: 360 }, 400, Phaser.Easing.Linear.None, true);
  var shrinkTween = game.add.tween(victim.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Linear.None, true)
@@ -591,6 +576,7 @@ success:function(){
     this.alienondamage=0;
     this.player.kill();
     this.alien.kill();
+    this.distanceText.text = 'Απόσταση: ' + this.pad(0,5)+'ΕΦ';
 	this.game.state.start('gameSuccess',false,false,this.game);
 }
 
