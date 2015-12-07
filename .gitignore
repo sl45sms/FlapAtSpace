@@ -1,8 +1,11 @@
 trash
 server
-mobile
-gulpfile.js
+dist/mobile/www/*
+dist/mobile/platforms/*
+dist/mobile/plugins/*
+dist/mobile/hooks/*
 *.xcf
 *.svg
 *.bkp
 *.geany
+*.log

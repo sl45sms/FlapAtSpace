@@ -1,0 +1,21 @@
+
+sudo npm install -g phonegap@latest
+
+
+sudo npm install --global gulp
+
+sudo npm install --global gulp-uglify
+sudo npm install --global gulp-cssmin
+sudo npm install --global gulp-concat
+sudo npm install --global gulp-rimraf
+sudo npm install --global gulp-imagemin
+sudo npm install --global imagemin-pngcrush
+sudo npm install --global gulp-replace
+sudo npm install --global gulp-rename
+sudo npm install --global path
+sudo npm install --global run-sequence
+sudo npm install --global streamqueue
+sudo npm install --global gulp-order
+
+
+TODO java,android SDK

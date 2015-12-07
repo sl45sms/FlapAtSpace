@@ -1,4 +1,16 @@
 (function () {
+document.addEventListener("deviceready", onDeviceReady, false);
+
+
+window.onload = function () {
+if(! window.device)
+    onDeviceReady()
+}
+
+
+
+function onDeviceReady() {
+
 
 game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'phaserCanvas');
 
@@ -95,6 +107,9 @@ updateStars:function(){
 }
 
 game.state.start('Boot',false,false,game);
+
+}
+
 
 })();
 
