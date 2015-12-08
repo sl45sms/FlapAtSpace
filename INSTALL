@@ -1,9 +1,12 @@
 
+Install phonegap
+----------------
 sudo npm install -g phonegap@latest
 
+Instal gulp and friends
+-----------------------
 
 sudo npm install --global gulp
-
 sudo npm install --global gulp-uglify
 sudo npm install --global gulp-cssmin
 sudo npm install --global gulp-concat
@@ -18,4 +21,40 @@ sudo npm install --global streamqueue
 sudo npm install --global gulp-order
 
 
-TODO java,android SDK
+Install Java 1.7
+----------------
+
+sudo mkdir -p /usr/lib/jvm
+
+--download Java from http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
+--you must agree to license first
+select jdk-7u80-linux-x64.tar.gz
+
+sudo tar xvzf jdk-7u80-linux-x64.tar.gz -C /usr/lib/jvm
+sudo chown -R root:root /usr/lib/jvm/jdk1.7*
+
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.7*/bin/java 1065
+sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.7*/bin/javac 1065
+sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/jdk1.7*/bin/jar 1065
+sudo update-alternatives --install /usr/bin/javaws javaws /usr/lib/jvm/jdk1.7*/bin/javaws 1065
+
+vim ~/.bashrc 
+       export JAVA_HOME=/usr/lib/jvm/jdk1.7.0_80
+
+
+
+Install Android SDK
+--------------------
+
+sudo apt-get install libstdc++6:i386 lib32z1 lib32ncurses5 libbz2-1.0
+
+wget http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
+sudo tar xvzf android-sdk_r24.4.1-linux.tgz -C /opt/
+sudo chown -R root:root /opt/android-sdk-linux
+sudo chmod -R +xr /opt/android-sdk-linux
+vim ~/.bashrc
+       export PATH=/opt/android-sdk-linux/tools:/opt/android-sdk-linux/platform-tools:$PATH
+bash --(to take new export variables,or reboot)
+cd /opt/android-sdk-linux/tools
+sudo su -c "./android sdk" (install the 18 recomented packages)
+
