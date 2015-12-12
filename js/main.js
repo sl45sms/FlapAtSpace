@@ -1,16 +1,5 @@
-(function () {
-document.addEventListener("deviceready", onDeviceReady, false);
-
-
-window.onload = function () {
-if(! window.device)
-    onDeviceReady()
-}
-
-
-
 function onDeviceReady() {
-
+console.log("Ready to FlapAtSpace!");
 
 game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'phaserCanvas');
 
@@ -111,6 +100,11 @@ game.state.start('Boot',false,false,game);
 }
 
 
-})();
+var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+if ( app ) {
+    document.addEventListener("deviceready", onDeviceReady, false);
+} else {
+    onDeviceReady();
+}  
 
 

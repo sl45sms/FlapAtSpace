@@ -9,3 +9,5 @@ dist/mobile/hooks/*
 *.bkp
 *.geany
 *.log
+*.aup
+*_data

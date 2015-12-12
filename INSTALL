@@ -57,4 +57,33 @@ vim ~/.bashrc
 bash --(to take new export variables,or reboot)
 cd /opt/android-sdk-linux/tools
 sudo su -c "./android sdk" (install the 18 recomented packages)
+reboot
+--Open the SDK manager by running: /opt/android-sdk-linux/tools/android
+You will require:
+1. "SDK Platform" for android-22
+2. "Android SDK Platform-tools (latest)
+3. "Android SDK Build-tools" (latest)
+sudo vim /etc/udev/rules.d/51-android-rules
+         # adb protocol on Sony E4
+         SUBSYSTEM=="usb", ATTR{idVendor}=="0fce", ATTR{idProduct}=="51c5", MODE="0664", OWNER="username" #--change to yours username
+reboot
+
+Create and run android build
+----------------------------
+cd dist mobile
+phonegap plugin add cordova-plugin-crosswalk-webview --for performance!
+
+sudo adb start-server
+--plugin phone to usb and authorize
+adb devices
+phonegap run android
+
+Debug
+------
+adb -d logcat chromium:I *:S
+
+
+View generated apk
+------------------
+aapt dump xmltree ~/PROJECTS/FlapAtSpace/dist/mobile/platforms/android/build/outputs/apk/android-armv7-debug.apk AndroidManifest.xml
 

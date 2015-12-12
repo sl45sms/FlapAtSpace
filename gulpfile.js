@@ -84,7 +84,11 @@ gulp.task('assets', function () {
 });
 
 
-
+gulp.task('fnt',function(){
+  gulp.src(['assets/**/*.fnt'])
+    .pipe(gulp.dest(path.join(config.dest, 'assets')));	
+	
+});
 
 /*=================================================
 =            Copy html files to dest              =
@@ -144,6 +148,6 @@ gulp.task('js', function() {
 ====================================*/
 
 gulp.task('default', function(done){
-  var tasks = ['html', 'assets', 'css', 'js'];
+  var tasks = ['html', 'assets','fnt', 'css', 'js'];
   seq('clean', tasks, done);
 });
