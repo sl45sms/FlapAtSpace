@@ -46,6 +46,20 @@ var preLoad={
 
            this.game.load.bitmapFont('introFonts', 'assets/intro/introFonts.png', 'assets/intro/introFonts.fnt');
            this.game.load.bitmapFont('introFontsShadow', 'assets/intro/introFontsShadow.png', 'assets/intro/introFonts.fnt');
+
+           this.game.load.audio('alien_explosion','assets/flap/alien_explosion.ogg');     
+           this.game.load.audio('blackhole_slurp','assets/flap/blackhole_slurp.ogg');    
+           this.game.load.audio('shield_sound','assets/flap/shield.ogg');         
+           this.game.load.audio('ufo_shot','assets/flap/ufo_shot.ogg');
+           this.game.load.audio('alien_shot','assets/flap/alien_shot.ogg');
+           this.game.load.audio('blackhole_warning','assets/flap/blackhole_warning.ogg');
+           this.game.load.audio('timewrapp_sound','assets/flap/timewrapp.ogg');
+           this.game.load.audio('whirlpool_sound','assets/flap/whirlpool.ogg');
+           this.game.load.audio('asteroid_explosion','assets/flap/asteroid_explosion.ogg');
+           this.game.load.audio('gravity_sound','assets/flap/gravity.ogg');
+           this.game.load.audio('ufo_explosion','assets/flap/ufo_explosion.ogg');
+
+           this.game.load.audio('music','assets/common/music/music.ogg');
 },
 
 create: function () {
@@ -57,21 +71,12 @@ create: function () {
 
 update: function () {
 
-		//	You don't actually need to do this, but I find it gives a much smoother game experience.
-		//	Basically it will wait for our audio file to be decoded before proceeding to the MainMenu.
-		//	You can jump right into the menu if you want and still play the music, but you'll have a few
-		//	seconds of delay while the mp3 decodes - so if you need your music to be in-sync with your menu
-		//	it's best to wait for it to decode here first, then carry on.
-		
-		//	If you don't have any music in your game then put the game.state.start line into the create function and delete
-		//	the update function completely.
-		
-		//if (this.cache.isSoundDecoded('titleMusic') && this.ready == false)
-	//	{
+		if (this.cache.isSoundDecoded('music') && this.ready == false)
+		{
 			this.ready = true;
 			this.preloadBar.kill();
 			this.game.state.start('introState',true,false,this.game);
-	//	}
+		}
 
 	}
 	

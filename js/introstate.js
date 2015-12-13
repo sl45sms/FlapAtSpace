@@ -45,7 +45,14 @@ this.introtext.anchor.set(0,0);
    this.spaceKey.onDown.add(this.playTheGame, this); 
    this.input.onDown.add(this.playTheGame, this); //Gia touch se kinita kai mouse
 
+//lets music play
+this.music = game.add.audio('music',0.6,true);
+this.music.play('',0,1,true);
+
 this.nextLine();
+
+
+
 	},
 	update:function(){
 	this.game.globals.updateStars();

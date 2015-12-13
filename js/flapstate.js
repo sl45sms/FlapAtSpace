@@ -246,6 +246,27 @@ create: function() {
    
    //difficulty
    game.time.events.loop(Phaser.Timer.SECOND*5, this.updateSpeed, this);    
+ 
+ 
+ 
+   //sounds
+
+   
+    this.alien_explosion = game.add.audio('alien_explosion',1,false);//TODO alien hit sound     
+    this.blackhole_slurp = game.add.audio('blackhole_slurp',1,false);  
+    this.shield_sound = game.add.audio('shield_sound',0.3,false);         
+    this.ufo_shot = game.add.audio('ufo_shot',1,false);
+    this.alien_shot = game.add.audio('alien_shot',1,false);
+    this.blackhole_warning = game.add.audio('blackhole_warning',1,false);
+    this.timewrapp_sound = game.add.audio('timewrapp_sound',0.3,false);
+    this.whirlpool_sound = game.add.audio('whirlpool_sound',0.4,false);
+    this.asteroid_explosion = game.add.audio('asteroid_explosion',1,false);
+    this.gravity_sound = game.add.audio('gravity_sound',1,false);
+    this.ufo_explosion = game.add.audio('ufo_explosion',1,false);
+   
+   
+   
+   
    
    //cheats
    this.cheatKeyHealth = this.game.input.keyboard.addKey(Phaser.KeyCode.H);
@@ -395,9 +416,10 @@ damage: function(){
   this.ondamage=10;//for damage frame
   this.player.damage((this.planetsBaseSpeed/80));
   this.updateHealthBar();
-
+  if (!this.gravity_sound.isPlaying)this.gravity_sound.play();
  if (this.player.health<=0)
  {
+	this.ufo_explosion.play();
 	this.playerExplosion = this.game.add.sprite(this.player.x, this.player.y, 'explosion');
     this.playerExplosion.anchor.setTo(0.5, 0.5);
     this.playerExplosion.rotation=this.asteroid.rotation;
@@ -416,10 +438,12 @@ damage: function(){
 	} 
 },
 fixdamage:function(){
+	if (!this.shield_sound.isPlaying)this.shield_sound.play();
 	 this.player.damage(-3);
      this.updateHealthBar();
 	},
 slowSpeed:function(){
+	if (!this.timewrapp_sound.isPlaying)this.timewrapp_sound.play();
 	if (this.planetsBaseSpeed>200)
     this.planetsBaseSpeed-=20;
     if (this.chocosBaseSpeed>220) 
@@ -443,6 +467,7 @@ shootBullet:function(victim){
     var bullet = this.bullets.getFirstDead();
     // If there aren't any bullets available then don't shoot
     if (bullet === null || bullet === undefined) return;
+    this.ufo_shot.play();
     bullet.revive();
     bullet.victim=victim;
     bullet.checkWorldBounds = true;
@@ -462,11 +487,13 @@ shootAlien:function(){
 	this.shootBullet(this.alien);
 },
 destroyalien:function(alien,bullet){
+	//TODO alien hit sound
 	bullet.kill();
 	alien.damage(300);//4 times, hit alien to destroy
 	this.alienondamage=10;//for damage tint
-	if (alien.health<=0){
+	if (alien.health<=0){	
 	alien.kill();
+	this.alien_explosion.play();
 	alienExplosion = this.game.add.sprite(this.alien.x, this.alien.y, 'explosion');
     alienExplosion.anchor.setTo(0.5, 0.5);
     alienExplosion.rotation=this.alien.rotation;
@@ -478,6 +505,7 @@ destroyalien:function(alien,bullet){
 destroyasteroid:function(asteroid,bullet){
 	bullet.kill();
 	asteroid.kill();
+	this.asteroid_explosion.play();
 	asteroidExplosion = this.game.add.sprite(this.asteroid.x, this.asteroid.y, 'explosion');
     asteroidExplosion.anchor.setTo(0.5, 0.5);
     asteroidExplosion.rotation=this.asteroid.rotation;
@@ -488,6 +516,7 @@ destroyasteroid:function(asteroid,bullet){
 alienshoot: function(){
     if (this.alien.health>0&&game.time.now > this.alienfiringTimer)
     {
+		this.alien_shot.play();
         //fire the bullet from alien
         this.alienbullet.reset(this.alien.body.x, this.alien.body.y);
         game.physics.arcade.moveToObject(this.alienbullet,this.player,1200);
@@ -498,6 +527,7 @@ collectChoco:function(choco){
 	choco.kill();
 	this.collectedChocos++;
 	
+	this.whirlpool_sound.play();
 	var chocowhirlpool = this.game.add.sprite(choco.x, choco.y, 'whirlpool');
     chocowhirlpool.anchor.setTo(0.5, 0.5);
     chocowhirlpool.animations.add('slurp');
@@ -507,6 +537,7 @@ collectChoco:function(choco){
 	this.collectedChocosText.text = 'Σοκολάτες: '+this.pad(this.collectedChocos,8);
 },
 blackHoleWarning: function(){
+this.blackhole_warning.play();	
 var warning=this.game.add.bitmapText(this.game.world.centerX, this.game.height/2, 'introFonts', "Προσοχή! Μαύρη Τρύπα", 78);
 warning.anchor.setTo(0.5, 0.5);
 warning.tint = 0xff2020;
@@ -518,7 +549,7 @@ warning.destroy();
 
 },
 blackholeEatSprite: function(blackhole,victim){
- 
+ this.blackhole_slurp.play();
  this.game.physics.arcade.moveToObject(victim, blackhole, 500);
  var rotTween = game.add.tween(victim).to( { angle: 360 }, 400, Phaser.Easing.Linear.None, true);
  var shrinkTween = game.add.tween(victim.scale).to( { x: 0, y: 0 }, 500, Phaser.Easing.Linear.None, true)

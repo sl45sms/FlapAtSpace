@@ -90,6 +90,13 @@ gulp.task('fnt',function(){
 	
 });
 
+gulp.task('sounds',function(){
+  gulp.src(['assets/**/*.ogg','assets/**/*.mp3'])
+    .pipe(gulp.dest(path.join(config.dest, 'assets')));	
+	
+});
+
+
 /*=================================================
 =            Copy html files to dest              =
 =================================================*/
@@ -148,6 +155,6 @@ gulp.task('js', function() {
 ====================================*/
 
 gulp.task('default', function(done){
-  var tasks = ['html', 'assets','fnt', 'css', 'js'];
+  var tasks = ['html', 'assets','fnt', 'sounds','css', 'js'];
   seq('clean', tasks, done);
 });

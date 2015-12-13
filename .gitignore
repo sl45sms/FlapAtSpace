@@ -1,5 +1,6 @@
 trash
 server
+assets/common/music/*
 dist/mobile/www/*
 dist/mobile/platforms/*
 dist/mobile/plugins/*
