@@ -18,7 +18,9 @@ lineIndex:0,
 wordDelay:120,
 lineDelay:400,
 fontsize:32,
-init: function(thisgame){ //You can pass any number of init parameters
+letsstart:false,
+init: function(thisgame,first_loop){ //You can pass any number of init parameters
+    this.first_loop = first_loop;
      this.game=thisgame;
      this.width=this.game.globals.width;
      this.height=this.game.globals.height;
@@ -32,6 +34,7 @@ init: function(thisgame){ //You can pass any number of init parameters
 	this.gameTitle.anchor.setTo(0.5,0);
 	this.playButton = this.game.add.button(this.game.world.centerX,this.game.world.height-100,"taptoplay",this.playTheGame,this);
 	this.playButton.anchor.setTo(0.5,0.5);
+    this.playButton.kill();	
 
 
 var ypos=(this.gameTitle.y+this.gameTitle.height)+30;
@@ -46,8 +49,10 @@ this.introtext.anchor.set(0,0);
    this.input.onDown.add(this.playTheGame, this); //Gia touch se kinita kai mouse
 
 //lets music play
+//this.basic_loop = game.add.audio('basic_loop',0.6,true);
+//this.basic_loop.play('',0,1,true);
 this.music = game.add.audio('music',0.6,true);
-this.music.play('',0,1,true);
+
 
 this.nextLine();
 
@@ -56,12 +61,22 @@ this.nextLine();
 	},
 	update:function(){
 	this.game.globals.updateStars();
+	if (this.cache.isSoundDecoded('music')&&this.letsstart==false){
+	//	this.basic_loop.stop();
+	this.first_loop.stop();
+		this.music.play();
+		this.letsstart=true;
+		 this.playButton.revive();
+	}
+	
 	},
 	playTheGame: function(){
+     if (this.letsstart==true){	
 	   this.gameTitle.kill();
        this.introtext.kill();
        this.playButton.kill();
 	   game.state.start("flapState",true,false,this.game);
+      }
 	},
 	nextLine:function() {
     if (this.lineIndex === this.content.length)

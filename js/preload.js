@@ -59,24 +59,29 @@ var preLoad={
            this.game.load.audio('gravity_sound','assets/flap/gravity.ogg');
            this.game.load.audio('ufo_explosion','assets/flap/ufo_explosion.ogg');
 
+           this.game.load.audio('basic_loop','assets/common/music/basic_loop.ogg');
            this.game.load.audio('music','assets/common/music/music.ogg');
+           
 },
 
 create: function () {
 
 		//	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes
 		this.preloadBar.cropEnabled = false;
+		this.first_loop = game.add.audio('first_loop',0.6,true);
+        this.first_loop.play('',0,1,true);
 
 	},
 
 update: function () {
 
-		if (this.cache.isSoundDecoded('music') && this.ready == false)
-		{
-			this.ready = true;
+		//if (this.cache.isSoundDecoded('basic_loop') && this.ready == false)
+	//	{
+	//		this.ready = true;
+	//		this.first_loop.stop();
 			this.preloadBar.kill();
-			this.game.state.start('introState',true,false,this.game);
-		}
+			this.game.state.start('introState',true,false,this.game,this.first_loop);
+	//	}
 
 	}
 	
