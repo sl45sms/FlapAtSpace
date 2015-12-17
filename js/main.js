@@ -20,6 +20,11 @@ game.globals={
   	starfield3:{},  	
 	width:1024,
 	height:768,
+	first_loop:null,
+	basic_loop:null,
+	refrain:null,
+	music:null,
+	
 	
 	createStars:function(){
 	this.stars=[];

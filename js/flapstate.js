@@ -41,16 +41,26 @@ var flapState = {
     maxDistance:20000,
     collectables:{},//Here you have to push any group that have collectable objects
     enemies:{},//Here you have to push any group that have enemies
+    letsplaymusic:false,
+
+resetVars:function(){
+	 this.distance =0;
+     this.collectedChocos=0;
+     this.planetsBaseSpeed=80;
+     this.chocosBaseSpeed=120;  
+     this.ondamage=0;
+     this.alienondamage=0;
+},
 
 init: function(thisgame){ //You can pass any number of init parameters
 	
      this.game=thisgame;
      this.game.stage.disableVisibilityChange = false; //not run on loosing focus  
-     
+
      
      this.width=this.game.globals.width;
      this.height=this.game.globals.height;
-
+     this.resetVars();
   },
 
 
@@ -264,7 +274,8 @@ create: function() {
     this.gravity_sound = game.add.audio('gravity_sound',1,false);
     this.ufo_explosion = game.add.audio('ufo_explosion',1,false);
    
-   
+   	this.game.globals.music = game.add.audio('music',0.6,true);
+
    
    
    
@@ -283,6 +294,14 @@ create: function() {
  },
 
  update: function() {
+   
+   
+    if (this.letsplaymusic==false&&this.cache.isSoundDecoded('music')){
+	    this.game.globals.basic_loop.fadeOut(2000);
+		this.game.globals.music.play('',0,1,true);
+		this.letsplaymusic=true;
+	}
+   
    
     //TODO move background slowly (but image must change to support the effect)
    // this.nubulu.tilePosition.x-=2; 
@@ -345,7 +364,7 @@ create: function() {
 	  this.shield.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
      }
     
-    //slowdown // based on updateSpeed...
+    //slowdown - based on updateSpeed...
 	if (this.planetsBaseSpeed>=420&&this.slowdown.x<-this.powerUpsWidth) {
 	  this.slowdown.y = Math.floor(Math.random() * (this.height-this.powerUpsHeight)) + 1;
 	  this.slowdown.x = (Math.random() * 900) + this.width+100; //Right out of screen
@@ -389,7 +408,7 @@ create: function() {
     //stars
     this.game.globals.updateStars();
 
-//Slowly rotate the ufo downward, up to a certain point.
+    //Slowly rotate the ufo downward, up to a certain point.
         if (this.player.angle < 20)
             this.player.angle += 1;
 
@@ -429,11 +448,7 @@ damage: function(){
 	if (this.distance > localStorage.getItem("highscore")) {//save highscore
                 localStorage.setItem("highscore", this.collectedChocos);
             }
-    this.distance=0;
-    this.planetsBaseSpeed=80;
-    this.chocosBaseSpeed=120;  
-    this.ondamage=0;
-    this.alienondamage=0;      
+    this.resetVars();     
 	this.game.state.start('gameOver',false,false,this.game);
 	} 
 },
@@ -600,11 +615,7 @@ pad: function(num,size){
 return ('00000000'+num).substr(-size);
 },
 success:function(){
-	this.distance=0;
-    this.planetsBaseSpeed=80;
-    this.chocosBaseSpeed=120;  
-    this.ondamage=0;
-    this.alienondamage=0;
+    this.resetVars();
     this.player.kill();
     this.alien.kill();
     this.distanceText.text = 'Απόσταση: ' + this.pad(0,5)+'ΕΦ';

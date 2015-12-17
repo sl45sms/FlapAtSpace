@@ -1,7 +1,7 @@
 var Boot={
 
 	    init: function (thisgame) {
-         this.game=thisgame;
+        this.game=thisgame;
         
         this.input.maxPointers = 1;
         this.stage.disableVisibilityChange = true;

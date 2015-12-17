@@ -19,8 +19,7 @@ wordDelay:120,
 lineDelay:400,
 fontsize:32,
 letsstart:false,
-init: function(thisgame,first_loop){ //You can pass any number of init parameters
-    this.first_loop = first_loop;
+init: function(thisgame){ //You can pass any number of init parameters
      this.game=thisgame;
      this.width=this.game.globals.width;
      this.height=this.game.globals.height;
@@ -49,9 +48,8 @@ this.introtext.anchor.set(0,0);
    this.input.onDown.add(this.playTheGame, this); //Gia touch se kinita kai mouse
 
 //lets music play
-//this.basic_loop = game.add.audio('basic_loop',0.6,true);
-//this.basic_loop.play('',0,1,true);
-this.music = game.add.audio('music',0.6,true);
+this.game.globals.basic_loop = game.add.audio('basic_loop',0.6,true);
+
 
 
 this.nextLine();
@@ -60,14 +58,16 @@ this.nextLine();
 
 	},
 	update:function(){
+		
 	this.game.globals.updateStars();
-	if (this.cache.isSoundDecoded('music')&&this.letsstart==false){
-	//	this.basic_loop.stop();
-	this.first_loop.stop();
-		this.music.play();
+	
+	if (this.cache.isSoundDecoded('basic_loop')&&this.letsstart==false){
+	    this.game.globals.first_loop.fadeOut(2000);
+        this.game.globals.basic_loop.play('',0,1,true);
 		this.letsstart=true;
-		 this.playButton.revive();
+		this.playButton.revive();
 	}
+	
 	
 	},
 	playTheGame: function(){
