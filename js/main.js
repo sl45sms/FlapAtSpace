@@ -100,6 +100,13 @@ updateStars:function(){
 	
 }
 
+
+//Detect language and load correct js
+game.globals.lng = window.navigator.userLanguage || window.navigator.language;
+if (!localStorage.getItem("lng")) localStorage.setItem("lng", game.globals.lng)
+else game.globals.lng = localStorage.getItem("lng");
+
+
 game.state.start('Boot',false,false,game);
 
 }

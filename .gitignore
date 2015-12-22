@@ -11,3 +11,4 @@ dist/mobile/hooks/*
 *.log
 *.aup
 *_data
+*.mid
