@@ -24,9 +24,8 @@ game.globals={
 	basic_loop:null,
 	refrain:null,
 	music:null,
-	
-	
-	createStars:function(){
+
+createStars:function(){
 	this.stars=[];
 		
 	//Star field
@@ -100,23 +99,21 @@ updateStars:function(){
 	
 }
 
-
-//Detect language and load correct js
-game.globals.lng = window.navigator.userLanguage || window.navigator.language;
+//Detect language
+var lng = window.navigator.userLanguage || window.navigator.language;
+if (lng.indexOf('-') !== -1)  lng = lng.split('-')[0];
+if (lng.indexOf('_') !== -1)  lng = lng.split('_')[0];
+game.globals.lng = lng;
 if (!localStorage.getItem("lng")) localStorage.setItem("lng", game.globals.lng)
 else game.globals.lng = localStorage.getItem("lng");
-
 
 game.state.start('Boot',false,false,game);
 
 }
-
 
 var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 if ( app ) {
     document.addEventListener("deviceready", onDeviceReady, false);
 } else {
     onDeviceReady();
-}  
-
-
+}

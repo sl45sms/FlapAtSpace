@@ -54,9 +54,11 @@ resetVars:function(){
 
 init: function(thisgame){ //You can pass any number of init parameters
 	
+	 this.t =thisgame.t;
      this.game=thisgame;
      this.game.stage.disableVisibilityChange = false; //not run on loosing focus  
-
+     this.padchocos =19-(this.t['chocolates'].length);  
+     this.padhighscore = 16-(this.t['highscore'].length); 
      
      this.width=this.game.globals.width;
      this.height=this.game.globals.height;
@@ -221,20 +223,20 @@ create: function() {
 
    
    //The score
-   this.distanceText = game.add.bitmapText(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'introFonts','Απόσταση: ' + this.pad(this.maxDistance,5)+'ΕΦ',26);
+   this.distanceText = game.add.bitmapText(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'introFonts',this.t['distance'] + this.pad(this.maxDistance,5)+'ΕΦ',26);
    this.distanceText.anchor.setTo(0,0);
    this.distanceText.fixedToCamera = true;
 
    //the chocos
-   this.collectedChocosText = game.add.bitmapText(this.distanceText.x+this.distanceText.width+15, 2, 'introFonts','Σοκολάτες: '+this.pad(this.collectedChocos,8),34);
+   this.collectedChocosText = game.add.bitmapText(this.distanceText.x+this.distanceText.width+15, 2, 'introFonts',this.t['chocolates'] + this.pad(this.collectedChocos,this.padchocos),34);
    this.collectedChocosText.tint = 0xbd9677;
    this.collectedChocosText.anchor.setTo(0,0);
    this.collectedChocosText.fixedToCamera = true;
 
    //highscore
-   if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 631);//beatme!
+   if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 630);//beatme!
    this.highscore=localStorage.getItem("highscore");
-   this.highscoreText=this.game.add.bitmapText(this.world.width-180, 8, 'introFonts','Κορυφαίο: '+this.pad(this.highscore,6),26);
+   this.highscoreText=this.game.add.bitmapText(this.world.width-180, 8, 'introFonts',this.t['highscore'] +this.pad(this.highscore,this.padhighscore),26);
    this.highscoreText.tint = 0xff9040;
    this.highscoreText.anchor.setTo(0,0);
    this.highscoreText.fixedToCamera = true;
@@ -288,7 +290,7 @@ create: function() {
    this.cheatKeyDistance =  this.game.input.keyboard.addKey(Phaser.KeyCode.D);
    this.cheatKeyDistance.onDown.add(function(){
    	     if (this.player.health>0) this.distance += 1000;
-         this.distanceText.text = 'Απόσταση: ' + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';
+         this.distanceText.text = this.t['distance'] + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';
 	   }, this); 
     
  },
@@ -383,7 +385,7 @@ create: function() {
        
      //Add and update the score
       if (this.player.health>0) this.distance += 10;
-         this.distanceText.text = 'Απόσταση: ' + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';    
+         this.distanceText.text = this.t['distance'] + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';    
 
     }
     },this);
@@ -549,11 +551,11 @@ collectChoco:function(choco){
     chocowhirlpool.play('slurp', 15, false, true);
  
 	choco.x = -this.chocosWidth-1;
-	this.collectedChocosText.text = 'Σοκολάτες: '+this.pad(this.collectedChocos,8);
+	this.collectedChocosText.text = this.t['chocolates'] + this.pad(this.collectedChocos,this.padchocos);
 },
 blackHoleWarning: function(){
 this.blackhole_warning.play();	
-var warning=this.game.add.bitmapText(this.game.world.centerX, this.game.height/2, 'introFonts', "Προσοχή! Μαύρη Τρύπα", 78);
+var warning=this.game.add.bitmapText(this.game.world.centerX, this.game.height/2, 'introFonts', this.t['warning black hole'], 78);
 warning.anchor.setTo(0.5, 0.5);
 warning.tint = 0xff2020;
 
@@ -618,7 +620,7 @@ success:function(){
     this.resetVars();
     this.player.kill();
     this.alien.kill();
-    this.distanceText.text = 'Απόσταση: ' + this.pad(0,5)+'ΕΦ';
+    this.distanceText.text = this.t['distance'] + this.pad(0,5)+'ΕΦ';
 	this.game.state.start('gameSuccess',false,false,this.game);
 }
 

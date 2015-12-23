@@ -1,3 +1,25 @@
 {
-"distance":"Distance"
+"distance": "Distance: ",
+"ly": "LY",
+"chocolates": "Chocolates: ",
+"highscore": "Highscore: ",
+"warning black hole": "Warning! Black Hole",
+"game over":"Game Over!",
+"start again":"Let's start again;",
+"win":"You are the winer!",
+"social":"like us to facebook",
+"intro text": [
+                "Deliver space chocolates that will collect",
+                "on the path to planet nubulu 20000 light years", 
+                "away from the Earth.",
+                "On your way try to avoid the gravitational  of planets because your ",
+                "spoils fuel, do not worry though, you often encounter in your path ",
+                "filling stations. ",
+                "You can slow down your journey, a little, if you spend over chronotounel. ",
+                "Destroy meteorites because if you collide with them will destroy ",
+                "direct your spaceship! ",
+                "Beware of black holes! ",
+                "",
+                "Good luck on your mission! " 
+               ]
 }

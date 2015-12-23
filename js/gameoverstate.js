@@ -1,10 +1,12 @@
 var gameOver={
 	init: function(thisgame){ //You can pass any number of init parameters
      this.game=thisgame;
+     this.t =thisgame.t;
      this.now = this.game.time.now;  
      this.clickdelay=2000;
   },
 create: function(){
+	
 		this.gameTitle = this.game.add.sprite(this.game.world.centerX,120,"gametitle");
 		this.gameTitle.anchor.setTo(0.5,0.5);
 		this.playButton = this.game.add.button(this.game.world.centerX,630,"taptoplay",this.playTheGame,this);
@@ -12,10 +14,10 @@ create: function(){
 
 
         var ypos=(this.gameTitle.y+this.gameTitle.height)+90;
-        this.gameOverText = game.add.bitmapText(this.game.world.centerX, ypos+1,'introFonts','Έχασες!', 64);    
+        this.gameOverText = game.add.bitmapText(this.game.world.centerX, ypos+1,'introFonts',this.t['game over'], 64);    
         this.gameOverText.anchor.set(0.5,0.5);
         this.gameOverText.tint = 0xFF9677;
-        this.gameOverAgain = game.add.bitmapText(this.game.world.centerX, ypos+1+this.gameOverText.height+10,'introFonts','Πάμε παλί απο την αρχή;', 32);    
+        this.gameOverAgain = game.add.bitmapText(this.game.world.centerX, ypos+1+this.gameOverText.height+10,'introFonts',this.t['start again'], 32);    
         this.gameOverAgain.anchor.set(0.5,0.5);
 
 

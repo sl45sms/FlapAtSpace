@@ -10,7 +10,8 @@ var preLoad={
   },
   preload: function() {
          
-            
+        game.load.json('i18n', 'js/i18n/'+game.globals.lng+'.json',true);//Load language if exist
+        	        
         this.background = this.add.sprite(0, 0, 'preloaderBackground');
 		this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
 
@@ -65,7 +66,8 @@ var preLoad={
 },
 
 create: function () {
-
+       game.t= game.cache.getJSON('i18n');
+ 
 		//	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes
 		this.preloadBar.cropEnabled = false;
 		this.game.globals.first_loop = game.add.audio('first_loop',0.6,true);

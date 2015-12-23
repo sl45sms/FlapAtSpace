@@ -1,17 +1,4 @@
 var introState = {
-content:[
-"Παράδωσε τα διαστημικά σοκολατάκια που θα μαζέψεις",
-"στη διαδρομή σου στον πλανήτη nubulu, 20000 έτη φωτός",
-"μακριά από την Γη.",
-"Στο δρόμο σου να αποφεύγεις τη βαρυτική έλξη των πλανητών γιατί σου",
-"χαλάει καύσιμα, μην ανησυχείς όμως, θα συναντάς συχνά στην διαδρομή σου",
-"σταθμούς ανεφοδιασμού.",
-"Μπορείς να επιβραδύνεις λίγο το ταξίδι σου αν περάσεις πάνω απο χρονοτούνελ.",
-"Κατάστρεψε τους μετεωρίτες γιατί αν συγκρουστείς μαζί τους θα καταστραφεί",
-"άμεσα το διαστημόπλοιό  σου!",
-"",
-"Καλή επιτυχία στην αποστολή σου!"
-],
 line :[],
 wordIndex:0,
 lineIndex:0,
@@ -25,6 +12,7 @@ init: function(thisgame){ //You can pass any number of init parameters
      this.height=this.game.globals.height;
      },
 	create: function(){
+    this.intromsg =this.game.t['intro text'];
     //Stars
     this.game.globals.createStars();
     this.background = this.add.sprite(0, 0, 'preloaderBackground');
@@ -79,13 +67,13 @@ this.nextLine();
       }
 	},
 	nextLine:function() {
-    if (this.lineIndex === this.content.length)
+    if (this.lineIndex === this.intromsg.length)
     {
         //  We're finished
         return;
     }
     //  Split the current line on spaces, so one word per array element
-    this.line = this.content[this.lineIndex].split(' ');
+    this.line = this.intromsg[this.lineIndex].split(' ');
     //  Reset the word index to zero (the first word in the line)
     this.wordIndex = 0;
     //  Call the 'nextWord' function once for each word in the line (line.length)

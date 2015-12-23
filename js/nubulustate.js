@@ -1,6 +1,7 @@
 var gameSuccess={
 	init: function(thisgame){ //You can pass any number of init parameters
      this.game=thisgame;
+     this.t =thisgame.t;
      this.now = this.game.time.now;  
      this.clickdelay=2000;
      this.ufo={};
@@ -16,10 +17,10 @@ create: function(){
   
 
         var ypos=(this.gameTitle.y+this.gameTitle.height)+90;
-        this.successText = game.add.bitmapText(this.game.world.centerX, ypos+1,'introFonts','Τα κατάφερες!', 64);    
+        this.successText = game.add.bitmapText(this.game.world.centerX, ypos+1,'introFonts',this.t['win'], 64);    
         this.successText.anchor.set(0.5,0.5);
         this.successText.tint = 0xFF9677;
-        this.successAgain = game.add.bitmapText(this.game.world.centerX, ypos+1+this.successText.height+10,'introFonts','Πάμε παλί απο την αρχή;', 32);    
+        this.successAgain = game.add.bitmapText(this.game.world.centerX, ypos+1+this.successText.height+10,'introFonts',this.t['start again'], 32);    
         this.successAgain.anchor.set(0.5,0.5);
 	
 	 this.player = this.game.add.sprite(80, 500, 'ufo');
