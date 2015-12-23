@@ -4,6 +4,7 @@ dist/mobile/www/*
 dist/mobile/platforms/*
 dist/mobile/plugins/*
 dist/mobile/hooks/*
+js/ads.js
 *.xcf
 *.svg
 *.bkp

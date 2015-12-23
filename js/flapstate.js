@@ -78,7 +78,10 @@ create: function() {
    
     this.game.stage.backgroundColor = '#111';
     //nubulu as background (place first-- order of sprites maters)
-    this.nubulu = this.game.add.tileSprite(0, 0, this.width,  this.height, 'nubulu');
+    this.nubulu = this.game.add.sprite(0, 0, 'nubulu');
+    this.nubulu.width=this.width;
+    this.nubulu.height=this.height;
+   
    
      //stars 
     this.game.globals.createStars();

@@ -115,6 +115,15 @@ gulp.task('html', function() {
    gulp.src(['index.html']) .pipe(gulp.dest(config.dest));
 });
 
+/*=================================================
+=            Copy i18n files to dest              =
+=================================================*/
+gulp.task('i18n',function(){
+  gulp.src(['js/i18n/*.json'])
+    .pipe(gulp.dest(path.join(config.dest, 'js/i18n')));	
+});
+
+
 
 /*======================================================================
 =            Compile and minify  css                                   =
@@ -141,7 +150,8 @@ gulp.task('js', function() {
       "js/flapstate.js",
       "js/gameoverstate.js",
       "js/nubulustate.js", 
-      "js/main.js"
+      "js/main.js",
+      "js/ads.js"
            ])
     .pipe(concat('app.js'))
     .pipe(uglify()) 
@@ -155,6 +165,6 @@ gulp.task('js', function() {
 ====================================*/
 
 gulp.task('default', function(done){
-  var tasks = ['html', 'assets','fnt', 'sounds','css', 'js'];
+  var tasks = ['html', 'assets','fnt', 'sounds','css', 'js','i18n'];
   seq('clean', tasks, done);
 });

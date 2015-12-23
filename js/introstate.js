@@ -16,6 +16,8 @@ init: function(thisgame){ //You can pass any number of init parameters
     //Stars
     this.game.globals.createStars();
     this.background = this.add.sprite(0, 0, 'preloaderBackground');
+    this.background.width=this.width;
+    this.background.height=this.height;
 
 	this.gameTitle = this.game.add.sprite(this.game.world.centerX,30,"gametitle");
 	this.gameTitle.anchor.setTo(0.5,0);

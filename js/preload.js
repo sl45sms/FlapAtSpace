@@ -13,7 +13,10 @@ var preLoad={
         game.load.json('i18n', 'js/i18n/'+game.globals.lng+'.json',true);//Load language if exist
         	        
         this.background = this.add.sprite(0, 0, 'preloaderBackground');
-		this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
+        this.background.width=this.game.globals.width;
+        this.background.height=this.game.globals.height;
+		this.preloadBar = this.add.sprite(this.game.world.centerX, 400, 'preloaderBar');
+        this.preloadBar.anchor.setTo(0.5,0.5);
 
 		//	This sets the preloadBar sprite as a loader sprite.
 		//	What that does is automatically crop the sprite from 0 to full-width

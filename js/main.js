@@ -1,7 +1,13 @@
 function onDeviceReady() {
 console.log("Ready to FlapAtSpace!");
 
-game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'phaserCanvas');
+
+// get dimensions of the window considering retina displays
+var w = window.innerWidth * window.devicePixelRatio,
+    h = window.innerHeight * window.devicePixelRatio;
+
+
+game = new Phaser.Game((h > w) ? h : w, (h > w) ? w : h, Phaser.CANVAS, 'phaserCanvas');
 
 game.state.add('Boot', Boot);
 game.state.add('preLoad', preLoad);
@@ -18,8 +24,8 @@ game.globals={
   	starfield1:{},
   	starfield2:{},
   	starfield3:{},  	
-	width:1024,
-	height:768,
+	width:w,
+	height:h,
 	first_loop:null,
 	basic_loop:null,
 	refrain:null,
