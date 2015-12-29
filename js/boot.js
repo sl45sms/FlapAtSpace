@@ -29,10 +29,11 @@ var Boot={
 
     },
 	 preload: function() {
+	   this.game.load.audio('first_loop','assets/common/music/first_loop.ogg',true); 
        game.load.json('i18n', 'js/i18n/en.json');//failback to en if language not exists
        this.game.load.image('preloaderBackground', 'assets/preloader/background.png');
        this.game.load.image('preloaderBar', 'assets/preloader/bar.png');
-       this.game.load.audio('first_loop','assets/common/music/first_loop.ogg');
+
 	},
 	
 	create: function () {

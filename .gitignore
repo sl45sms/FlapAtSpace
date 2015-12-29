@@ -1,10 +1,13 @@
 trash
 server
-dist/mobile/www/*
-dist/mobile/platforms/*
-dist/mobile/plugins/*
-dist/mobile/hooks/*
+dist/www/*
+dist/platforms/*
+dist/plugins/*
+dist/hooks/*
 js/ads.js
+config.js
+*.sh
+*.php
 *.xcf
 *.svg
 *.bkp

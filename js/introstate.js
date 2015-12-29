@@ -51,9 +51,9 @@ this.nextLine();
 		
 	this.game.globals.updateStars();
 	
-	if (this.cache.isSoundDecoded('basic_loop')&&this.letsstart==false){
-	    this.game.globals.first_loop.fadeOut(2000);
-        this.game.globals.basic_loop.play('',0,1,true);
+	if (this.cache.isSoundDecoded('first_loop')&&this.letsstart==false){
+	    //this.game.globals.first_loop.fadeOut(2000);
+        //this.game.globals.basic_loop.play('',0,1,true);
 		this.letsstart=true;
 		this.playButton.revive();
 	}

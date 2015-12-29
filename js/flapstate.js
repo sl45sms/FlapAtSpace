@@ -279,7 +279,6 @@ create: function() {
     this.gravity_sound = game.add.audio('gravity_sound',1,false);
     this.ufo_explosion = game.add.audio('ufo_explosion',1,false);
    
-   	this.game.globals.music = game.add.audio('music',0.6,true);
 
    
    
@@ -300,13 +299,16 @@ create: function() {
 
  update: function() {
    
-   
+   /*
     if (this.letsplaymusic==false&&this.cache.isSoundDecoded('music')){
-	    this.game.globals.basic_loop.fadeOut(2000);
-		this.game.globals.music.play('',0,1,true);
-		this.letsplaymusic=true;
+	 	this.letsplaymusic=true;
+	   // this.game.globals.first_loop.fadeOut(2000);
+	   this.game.globals.first_loop.loop=false;
+	   
+	    this.game.globals.first_loop.stop();
+		this.game.globals.music.play();
 	}
-   
+   */
    
     //TODO move background slowly (but image must change to support the effect)
    // this.nubulu.tilePosition.x-=2; 
