@@ -280,10 +280,8 @@ create: function() {
     this.ufo_explosion = game.add.audio('ufo_explosion',1,false);
    
 
-   
-   
-   
-   //cheats
+
+   //+cheats+// Place Cheats here for development tests.. Remove for production!
    this.cheatKeyHealth = this.game.input.keyboard.addKey(Phaser.KeyCode.H);
    this.cheatKeyHealth.onDown.add(function(){
    	 this.player.damage(-300);
@@ -294,7 +292,7 @@ create: function() {
    	     if (this.player.health>0) this.distance += 1000;
          this.distanceText.text = this.t['distance'] + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';
 	   }, this); 
-    
+  //-cheats-//  
  },
 
  update: function() {

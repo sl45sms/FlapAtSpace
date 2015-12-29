@@ -153,6 +153,7 @@ gulp.task('js', function() {
       "js/main.js",
       "js/ads.js"
            ])
+    .pipe(replace(/\+cheats\+[\S\s]*\-cheats\-/g, ''))      
     .pipe(concat('app.js'))
     .pipe(uglify()) 
     .pipe(rename({suffix: '.min'}))
