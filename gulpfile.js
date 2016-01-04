@@ -5,7 +5,7 @@
 // Please use config.js to override these selectively:
 
 var config = {
-  dest: 'dist/mobile/www',
+  dest: 'dist/www',
   cordova: true,
   minify_images: false,
 };
@@ -83,6 +83,13 @@ gulp.task('assets', function () {
   return stream.pipe(gulp.dest(path.join(config.dest, 'assets')));
 });
 
+
+gulp.task('ico',function(){
+  gulp.src(['assets/**/*.ico'])
+    .pipe(gulp.dest(path.join(config.dest, 'assets')));	
+  gulp.src(['assets/common/favicon.ico'])
+    .pipe(gulp.dest(config.dest));	
+});
 
 gulp.task('fnt',function(){
   gulp.src(['assets/**/*.fnt'])
@@ -166,6 +173,6 @@ gulp.task('js', function() {
 ====================================*/
 
 gulp.task('default', function(done){
-  var tasks = ['html', 'assets','fnt', 'sounds','css', 'js','i18n'];
+  var tasks = ['html', 'assets','fnt','ico', 'sounds','css', 'js','i18n'];
   seq('clean', tasks, done);
 });

@@ -70,7 +70,7 @@ reboot
 
 Create and run android build
 ----------------------------
-cd dist mobile
+cd dist 
 phonegap plugin add cordova-plugin-crosswalk-webview --for performance!
 
 sudo adb start-server
@@ -85,5 +85,5 @@ adb -d logcat chromium:I *:S
 
 View generated apk
 ------------------
-aapt dump xmltree ~/PROJECTS/FlapAtSpace/dist/mobile/platforms/android/build/outputs/apk/android-armv7-debug.apk AndroidManifest.xml
+aapt dump xmltree ~/PROJECTS/FlapAtSpace/dist/platforms/android/build/outputs/apk/android-armv7-debug.apk AndroidManifest.xml
 

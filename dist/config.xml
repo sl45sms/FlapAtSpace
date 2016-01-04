@@ -4,7 +4,7 @@
     <description>
          Collect Chocos and deliver them at Nubule Planet 20000 LY away!
     </description>
-    <author email="panagiotis@skarvelis.gr" href="http://skarvelis.gr/FlapAtSpace">
+    <author email="panagiotis@skarvelis.gr" href="flapatspace.games.skarvelis.gr">
         Panagiotis Skarvelis
     </author>
     <content src="index.html" />
@@ -85,6 +85,6 @@
     <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
     <preference name="xwalkMode" value="embedded" />
     <preference name="xwalkMultipleApk" value="true" />
-    <engine name="android" spec="~4.1.1" />
     <engine name="browser" spec="~4.0.0" />
+    <engine name="android" spec="~4.1.1" />
 </widget>

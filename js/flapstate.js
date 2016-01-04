@@ -212,8 +212,8 @@ create: function() {
    this.game.physics.arcade.enable(this.wall);
    
    //logo
-   	this.gameTitle = this.game.add.sprite(10,10,"gametitlesmall");
-	this.gameTitle.anchor.setTo(0,0);
+   this.gameTitle = this.game.add.sprite(10,10,"gametitlesmall");
+   this.gameTitle.anchor.setTo(0,0);
    
    //health bar
    this.health_bar_back=this.game.add.sprite(this.gameTitle.width+20,12,'health_back');
@@ -224,25 +224,31 @@ create: function() {
    this.health_bar.fixedToCamera = true;
    this.health_bar.anchor.setTo(0,0);
 
+
+
+   
    
    //The score
    this.distanceText = game.add.bitmapText(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'introFonts',this.t['distance'] + this.pad(this.maxDistance,5)+'ΕΦ',26);
    this.distanceText.anchor.setTo(0,0);
    this.distanceText.fixedToCamera = true;
 
-   //the chocos
+   //the colected chocos
    this.collectedChocosText = game.add.bitmapText(this.distanceText.x+this.distanceText.width+15, 2, 'introFonts',this.t['chocolates'] + this.pad(this.collectedChocos,this.padchocos),34);
    this.collectedChocosText.tint = 0xbd9677;
    this.collectedChocosText.anchor.setTo(0,0);
    this.collectedChocosText.fixedToCamera = true;
 
-   //highscore
+   //highscore 
    if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 630);//beatme!
    this.highscore=localStorage.getItem("highscore");
-   this.highscoreText=this.game.add.bitmapText(this.world.width-180, 8, 'introFonts',this.t['highscore'] +this.pad(this.highscore,this.padhighscore),26);
+   this.highscoreText=this.game.add.bitmapText(this.collectedChocosText.x+this.collectedChocosText.width+10, 8, 'introFonts',this.t['highscore'] +this.pad(this.highscore,this.padhighscore),26);
    this.highscoreText.tint = 0xff9040;
    this.highscoreText.anchor.setTo(0,0);
    this.highscoreText.fixedToCamera = true;
+   //hide if out of screen
+   if ((this.highscoreText.x+this.highscoreText.width)>this.world.width) this.highscoreText.kill();
+
 
 
    //key mouse touch jump    
