@@ -59,7 +59,7 @@ init: function(thisgame){ //You can pass any number of init parameters
      this.game.stage.disableVisibilityChange = false; //not run on loosing focus  
      this.padchocos =19-(this.t['chocolates'].length);  
      this.padhighscore = 16-(this.t['highscore'].length); 
-     
+     this.scaleRatio=this.game.globals.scaleRatio;
      this.width=this.game.globals.width;
      this.height=this.game.globals.height;
      this.resetVars();
@@ -95,6 +95,8 @@ create: function() {
       this.blackhole.anchor.setTo(0.5, 0.5);
       this.blackhole.body.velocity.x = 1-(Math.random()*((this.blackholeSpeed*2)-this.blackholeSpeed+1)+this.blackholeSpeed);
       this.blackhole.body.immovable = true;
+      this.blackhole.scale.setTo(this.scaleRatio, this.scaleRatio);
+
 
     //Bullets
      this.bullets = this.game.add.group();
@@ -102,6 +104,7 @@ create: function() {
         var bullet = this.game.add.sprite(0, 0, 'bullet');
         this.bullets.add(bullet);
          bullet.anchor.setTo(0, 0.5);
+         bullet.scale.setTo(this.scaleRatio, this.scaleRatio);
          this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
          bullet.kill();
         }
@@ -111,12 +114,13 @@ create: function() {
      this.game.physics.arcade.enable(this.alienbullet);
      this.alienbullet.checkWorldBounds = true;
      this.alienbullet.outOfBoundsKill = true;
+     this.alienbullet.scale.setTo(this.scaleRatio, this.scaleRatio);
      this.alienbullet.kill();
-   
+      
      
      //Planets
      this.planets = this.game.add.group();
-     this.maxplanets=Math.floor(this.height/this.planetsHeight);
+     this.maxplanets=Math.floor(this.height/(this.planetsHeight*this.scaleRatio));//TODO on scale???
      this.planetsPosheight=this.height/this.maxplanets;
 
     for (var i = 0; i < this.maxplanets; i++)
@@ -126,6 +130,7 @@ create: function() {
       this.game.physics.arcade.enable(planet);
       planet.body.velocity.x = 1-(Math.random()*((this.planetsBaseSpeed*2)-this.planetsBaseSpeed+1)+this.planetsBaseSpeed);
       planet.body.immovable = true;
+      planet.scale.setTo(this.scaleRatio, this.scaleRatio);
     }
  
 
@@ -135,12 +140,12 @@ create: function() {
       this.game.physics.arcade.enable(this.shield);
       this.shield.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
       this.shield.body.immovable = true;
-
+      this.shield.scale.setTo(this.scaleRatio, this.scaleRatio);
       this.slowdown = this.powerups.create((Math.random() * 900) + 530, -1000, 'slowdown',1);
       this.game.physics.arcade.enable(this.slowdown);
       this.slowdown.body.velocity.x = 1-(Math.random()*((this.powerUpsSpeed*2)-this.powerUpsSpeed+1)+this.powerUpsSpeed);
       this.slowdown.body.immovable = true;
-    
+      this.slowdown.scale.setTo(this.scaleRatio, this.scaleRatio);
     
      //chocos
      this.chocos =  this.game.add.group();
@@ -153,6 +158,7 @@ create: function() {
        choco.inputEnabled = true;
        choco.events.onInputDown.add(this.collectChoco, this);
        choco.input.useHandCursor = true;
+       choco.scale.setTo(this.scaleRatio, this.scaleRatio);
     }
 
      //asteroids
@@ -166,7 +172,8 @@ create: function() {
      this.asteroid.inputEnabled = true;
      this.asteroid.input.useHandCursor = true;
      this.asteroid.events.onInputDown.add(this.shootAsteroid,this);
-     this.asteroid.body.immovable = true; 
+     this.asteroid.body.immovable = true;
+     this.asteroid.scale.setTo(this.scaleRatio, this.scaleRatio); 
 
      //alien
      this.alien = this.game.add.sprite((Math.random() * 900) + 530,-1000,'alienufo');
@@ -184,6 +191,7 @@ create: function() {
      this.alien.events.onInputDown.add(this.shootAlien,this);
      this.alien.body.collideWorldBounds = true;
      this.alien.health=0;
+     this.alien.scale.setTo(this.scaleRatio, this.scaleRatio);
      this.alien.kill();
 
    
@@ -203,6 +211,8 @@ create: function() {
    this.player.health = this.player.maxHealth;
    this.player.anchor.setTo(-0.2, 0.5); 
    
+   this.player.scale.setTo(this.scaleRatio, this.scaleRatio);
+   
    //player 
    var player=this.player;
    
@@ -214,16 +224,18 @@ create: function() {
    //logo
    this.gameTitle = this.game.add.sprite(10,10,"gametitlesmall");
    this.gameTitle.anchor.setTo(0,0);
+   this.gameTitle.scale.setTo(this.scaleRatio, this.scaleRatio);
    
    //health bar
    this.health_bar_back=this.game.add.sprite(this.gameTitle.width+20,12,'health_back');
    this.health_bar_back.fixedToCamera = true;
    this.health_bar_back.anchor.setTo(0,0);
+   this.health_bar_back.scale.setTo(this.scaleRatio, this.scaleRatio);
    this.health_bar = this.game.add.sprite(this.gameTitle.width+20,12,'health_bar');
    this.health_bar.cropEnabled = true;
    this.health_bar.fixedToCamera = true;
    this.health_bar.anchor.setTo(0,0);
-
+   this.health_bar.scale.setTo(this.scaleRatio, this.scaleRatio);
 
 
    
@@ -232,13 +244,15 @@ create: function() {
    this.distanceText = game.add.bitmapText(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'introFonts',this.t['distance'] + this.pad(this.maxDistance,5)+'ΕΦ',26);
    this.distanceText.anchor.setTo(0,0);
    this.distanceText.fixedToCamera = true;
-
+   this.distanceText.scale.setTo(this.scaleRatio, this.scaleRatio);
+   
    //the colected chocos
    this.collectedChocosText = game.add.bitmapText(this.distanceText.x+this.distanceText.width+15, 2, 'introFonts',this.t['chocolates'] + this.pad(this.collectedChocos,this.padchocos),34);
    this.collectedChocosText.tint = 0xbd9677;
    this.collectedChocosText.anchor.setTo(0,0);
    this.collectedChocosText.fixedToCamera = true;
-
+   this.collectedChocosText.scale.setTo(this.scaleRatio, this.scaleRatio);
+   
    //highscore 
    if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 630);//beatme!
    this.highscore=localStorage.getItem("highscore");
@@ -246,9 +260,10 @@ create: function() {
    this.highscoreText.tint = 0xff9040;
    this.highscoreText.anchor.setTo(0,0);
    this.highscoreText.fixedToCamera = true;
+   this.highscoreText.scale.setTo(this.scaleRatio, this.scaleRatio);
    //hide if out of screen
    if ((this.highscoreText.x+this.highscoreText.width)>this.world.width) this.highscoreText.kill();
-
+   
 
 
    //key mouse touch jump    
@@ -452,6 +467,7 @@ damage: function(){
 	this.ufo_explosion.play();
 	this.playerExplosion = this.game.add.sprite(this.player.x, this.player.y, 'explosion');
     this.playerExplosion.anchor.setTo(0.5, 0.5);
+    this.playerExplosion.scale.setTo(this.scaleRatio, this.scaleRatio);
     this.playerExplosion.rotation=this.asteroid.rotation;
     this.playerExplosion.animations.add('caboom');
     this.playerExplosion.play('caboom', 15, false, true);
@@ -522,6 +538,7 @@ destroyalien:function(alien,bullet){
 	this.alien_explosion.play();
 	alienExplosion = this.game.add.sprite(this.alien.x, this.alien.y, 'explosion');
     alienExplosion.anchor.setTo(0.5, 0.5);
+    alienExplosion.scale.setTo(this.scaleRatio, this.scaleRatio);
     alienExplosion.rotation=this.alien.rotation;
     alienExplosion.animations.add('boom');
     alienExplosion.play('boom', 15, false, true);
@@ -534,6 +551,7 @@ destroyasteroid:function(asteroid,bullet){
 	this.asteroid_explosion.play();
 	asteroidExplosion = this.game.add.sprite(this.asteroid.x, this.asteroid.y, 'explosion');
     asteroidExplosion.anchor.setTo(0.5, 0.5);
+    asteroidExplosion.scale.setTo(this.scaleRatio, this.scaleRatio);
     asteroidExplosion.rotation=this.asteroid.rotation;
     asteroidExplosion.animations.add('boom');
     asteroidExplosion.play('boom', 15, false, true);
@@ -556,6 +574,7 @@ collectChoco:function(choco){
 	this.whirlpool_sound.play();
 	var chocowhirlpool = this.game.add.sprite(choco.x, choco.y, 'whirlpool');
     chocowhirlpool.anchor.setTo(0.5, 0.5);
+    chocowhirlpool.scale.setTo(this.scaleRatio, this.scaleRatio);
     chocowhirlpool.animations.add('slurp');
     chocowhirlpool.play('slurp', 15, false, true);
  
@@ -605,7 +624,7 @@ blackholeEatSprite: function(blackhole,victim){
 },
 jump: function() {  
     // Add a vertical velocity to the ufo
-    this.player.body.velocity.y = -350;
+    this.player.body.velocity.y = -350;//TODO folow scale?
     // Jump animation
     this.game.add.tween(this.player).to({angle: -20}, 100).start();
 },

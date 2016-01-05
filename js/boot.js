@@ -8,7 +8,7 @@ var Boot={
 
         if (this.game.device.desktop)
         {
-            this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
           //  this.scale.setMinMax(480, 260, 1024, 768);
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
@@ -18,7 +18,7 @@ var Boot={
         {
 			this.scale.windowConstraints.bottom = "visual"; 
             this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-          //  this.scale.setMinMax(480, 260, 1024, 768);
+           // this.scale.setMinMax(480, 260, 1024, 768);
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
             this.scale.forceOrientation(true, false);

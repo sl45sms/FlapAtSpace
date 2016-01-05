@@ -6,8 +6,10 @@ console.log("Ready to FlapAtSpace!");
 var w = window.innerWidth * window.devicePixelRatio,
     h = window.innerHeight * window.devicePixelRatio;
 
-
-game = new Phaser.Game((h > w) ? h : w, (h > w) ? w : h, Phaser.CANVAS, 'phaserCanvas');
+if (w>1024) {w=1024;
+	        h=768;
+		    }  
+game = new Phaser.Game((h > w) ? h : w, (h > w) ? w : h, Phaser.CANVAS, 'phaserCanvas');//TODO check
 
 game.state.add('Boot', Boot);
 game.state.add('preLoad', preLoad);
@@ -18,6 +20,7 @@ game.state.add('gameSuccess', gameSuccess);
 
 game.globals={
     //score: 0,
+    scaleRatio: (1/window.devicePixelRatio)*window.devicePixelRatio,
     orientated: false,
   	stars:[],
   	star:{},
