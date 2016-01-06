@@ -1,3 +1,9 @@
+/**
+* @author       Panagiotis Skarvelis
+* @copyright    2016
+* @license      {@link https://github.com/sl45sms/FlapAtSpace/blob/master/license.txt|MIT License}
+*/
+
 var flapState = {
     game: {},
     player: {},
