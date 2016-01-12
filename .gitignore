@@ -1,11 +1,14 @@
 trash
 server
+vendors
 dist/www/*
 dist/platforms/*
 dist/plugins/*
 dist/hooks/*
 js/ads.js
 config.js
+tos.txt
+pp.txt
 *.sh
 *.php
 *.xcf
