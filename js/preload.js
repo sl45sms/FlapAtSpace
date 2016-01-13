@@ -15,9 +15,7 @@ var preLoad={
      this.game.stage.disableVisibilityChange = true; //run without focus  
   },
   preload: function() {
-        
- 
-         
+
         this.game.load.json('i18n', 'js/i18n/'+game.globals.lng+'.json',true);//Load language if exist
         	        
         this.background = this.add.sprite(0, 0, 'preloaderBackground');
@@ -83,9 +81,9 @@ create: function () {
 		this.game.globals.first_loop = game.add.audio('first_loop',1,true);
         this.game.globals.first_loop.play('',0,1,true);
 
-    this.game.globals.music = game.add.audio('music',1,true);
-    this.game.globals.music.onDecoded.add(function(){
-	   
+        this.game.globals.music = game.add.audio('music',1,true);
+        this.game.globals.music.onDecoded.add(function(){
+ 	   
 	    this.game.globals.first_loop.onLoop.add(function(){
 		     this.game.globals.first_loop.loop=false;
 		     this.game.globals.first_loop.stop();
