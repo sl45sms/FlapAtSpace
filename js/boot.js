@@ -12,27 +12,21 @@ var Boot={
         this.input.maxPointers = 1;
         this.stage.disableVisibilityChange = true;
 
-        if (this.game.device.desktop)
+      if (this.game.device.desktop)
         {
-            this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
-          //  this.scale.setMinMax(480, 260, 1024, 768);
+            this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            this.scale.windowConstraints.bottom = "visual"; 
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
-
         }
         else
         {
 			this.scale.windowConstraints.bottom = "visual"; 
-            this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-           // this.scale.setMinMax(480, 260, 1024, 768);
-            this.scale.pageAlignHorizontally = true;
-            this.scale.pageAlignVertically = true;
+            this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
             this.scale.forceOrientation(true, false);
             this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
             this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
-
         }
-
     },
 	 preload: function() {
 	   this.game.load.audio('first_loop','assets/common/music/first_loop.ogg',true); 

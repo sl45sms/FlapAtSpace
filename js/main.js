@@ -5,17 +5,16 @@
 */
 
 function onDeviceReady() {
-console.log("Ready to FlapAtSpace!");
-
 
 // get dimensions of the window considering retina displays
 var w = window.innerWidth * window.devicePixelRatio,
     h = window.innerHeight * window.devicePixelRatio;
 
-if (w>1024) {w=1024;
+if (w>1024){
+	        w=1024;
 	        h=768;
 		    }  
-game = new Phaser.Game((h > w) ? h : w, (h > w) ? w : h, Phaser.CANVAS, 'phaserCanvas');//TODO check
+game = new Phaser.Game((h > w) ? h : w, (h > w) ? w : h, Phaser.CANVAS, '');//TODO check
 
 game.state.add('Boot', Boot);
 game.state.add('preLoad', preLoad);
