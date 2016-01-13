@@ -37,14 +37,10 @@ var Boot={
 	},
 	
 	create: function () {
-    
     this.state.start('preLoad',false,false,this.game);
-
     },
 
 	update:function(){
-		
-
 
 	},
 

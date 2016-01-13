@@ -10,11 +10,13 @@ function onDeviceReady() {
 var w = window.innerWidth * window.devicePixelRatio,
     h = window.innerHeight * window.devicePixelRatio;
 
-if (w>1024){
+if (w>1024){ //TODO smaller ie 1024/2?
 	        w=1024;
 	        h=768;
-		    }  
-game = new Phaser.Game((h > w) ? h : w, (h > w) ? w : h, Phaser.CANVAS, '');//TODO check
+		    }
+var rw=(h > w) ? h : w; //use this on globals
+var rh=	(h > w) ? w : h;	      
+game = new Phaser.Game(rw,rh, Phaser.CANVAS, '');
 
 game.state.add('Boot', Boot);
 game.state.add('preLoad', preLoad);
@@ -32,8 +34,8 @@ game.globals={
   	starfield1:{},
   	starfield2:{},
   	starfield3:{},  	
-	width:w,
-	height:h,
+	width:rw,
+	height:rh,
 	first_loop:null,
 	basic_loop:null,
 	refrain:null,
@@ -44,19 +46,14 @@ createStars:function(){
 		
 	//Star field
 	
-
    	this.star = game.make.sprite(0, 0, 'star');
 	this.starfield1 = game.add.renderTexture(this.width, this.height, 'starfield1');
 	this.starfield2 = game.add.renderTexture(this.width, this.height, 'starfield2');
 	this.starfield3 = game.add.renderTexture(this.width, this.height, 'starfield3');
 
-
-
-   game.add.sprite(0, 0, this.starfield1);
-   game.add.sprite(0, 0, this.starfield2);
-   game.add.sprite(0, 0, this.starfield3);
-  
-
+    game.add.sprite(0, 0, this.starfield1);
+    game.add.sprite(0, 0, this.starfield2);
+    game.add.sprite(0, 0, this.starfield3);
   
     var t = this.starfield1;
 	var s = 4;
@@ -82,11 +79,11 @@ createStars:function(){
 	}
 
 	},
+
 updateStars:function(){
 		
   for (var i = 0; i < 300; i++)
 	{
-		
 
 		//	Update the stars y position based on its speed
 		this.stars[i].x -= this.stars[i].speed;
@@ -122,9 +119,9 @@ if (!localStorage.getItem("lng")) localStorage.setItem("lng", game.globals.lng)
 else game.globals.lng = localStorage.getItem("lng");
 
 game.state.start('Boot',false,false,game);
-
 }
 
+//Detect if on browser or mobile app
 var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 if ( app ) {
     document.addEventListener("deviceready", onDeviceReady, false);

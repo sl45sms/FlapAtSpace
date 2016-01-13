@@ -478,7 +478,7 @@ damage: function(){
     this.playerExplosion.animations.add('caboom');
     this.playerExplosion.play('caboom', 15, false, true);
 
-	if (this.distance > localStorage.getItem("highscore")) {//save highscore
+	if (this.collectedChocos > localStorage.getItem("highscore")) {//save highscore
                 localStorage.setItem("highscore", this.collectedChocos);
             }
     this.resetVars();     
