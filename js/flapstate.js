@@ -247,7 +247,7 @@ create: function() {
    
    
    //The score
-   this.distanceText = game.add.bitmapText(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'introFonts',this.t['distance'] + this.pad(this.maxDistance,5)+'ΕΦ',26);
+   this.distanceText = game.add.bitmapText(this.health_bar_back.x+this.health_bar_back.width+10, 8, 'introFonts',this.t['distance'] + this.pad(this.maxDistance,5)+this.t['ly'],26);
    this.distanceText.anchor.setTo(0,0);
    this.distanceText.fixedToCamera = true;
    this.distanceText.scale.setTo(this.scaleRatio, this.scaleRatio);
@@ -317,7 +317,7 @@ create: function() {
    this.cheatKeyDistance =  this.game.input.keyboard.addKey(Phaser.KeyCode.D);
    this.cheatKeyDistance.onDown.add(function(){
    	     if (this.player.health>0) this.distance += 1000;
-         this.distanceText.text = this.t['distance'] + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';
+         this.distanceText.text = this.t['distance'] + this.pad(this.maxDistance-this.distance,5)+this.t['ly'];
 	   }, this); 
   //-cheats-//  
  },
@@ -415,7 +415,7 @@ create: function() {
        
      //Add and update the score
       if (this.player.health>0) this.distance += 10;
-         this.distanceText.text = this.t['distance'] + this.pad(this.maxDistance-this.distance,5)+'ΕΦ';    
+         this.distanceText.text = this.t['distance'] + this.pad(this.maxDistance-this.distance,5)+this.t['ly'];    
 
     }
     },this);
@@ -654,7 +654,7 @@ success:function(){
     this.resetVars();
     this.player.kill();
     this.alien.kill();
-    this.distanceText.text = this.t['distance'] + this.pad(0,5)+'ΕΦ';
+    this.distanceText.text = this.t['distance'] + this.pad(0,5)+this.t['ly'];
 	this.game.state.start('gameSuccess',false,false,this.game);
 }
 
