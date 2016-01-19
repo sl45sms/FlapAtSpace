@@ -1,6 +1,7 @@
 trash
 server
 vendors
+MEDIAS
 dist/www/*
 dist/platforms/*
 dist/plugins/*
