@@ -86,4 +86,4 @@ adb -d logcat chromium:I *:S
 View generated apk
 ------------------
 aapt dump xmltree ~/PROJECTS/FlapAtSpace/dist/platforms/android/build/outputs/apk/android-armv7-debug.apk AndroidManifest.xml
-
+aapt l -a android-release.apk

@@ -2,6 +2,8 @@ trash
 server
 vendors
 MEDIAS
+keys
+release-signing.properties
 dist/www/*
 dist/platforms/*
 dist/plugins/*

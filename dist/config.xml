@@ -4,7 +4,7 @@
     <description>
          Collect Chocos and deliver them at Nubule Planet 20000 LY away!
     </description>
-    <author email="panagiotis@skarvelis.gr" href="flapatspace.games.skarvelis.gr">
+    <author email="panagiotis@skarvelis.gr" href="https://flapatspace.games.skarvelis.gr">
         Panagiotis Skarvelis
     </author>
     <content src="index.html" />
@@ -59,6 +59,10 @@
     <gap:splash gap:platform="android" gap:qualifier="port-mdpi" src="www/assets/res/screen/android/screen-mdpi-portrait.png" />
     <gap:splash gap:platform="android" gap:qualifier="port-hdpi" src="www/assets/res/screen/android/screen-hdpi-portrait.png" />
     <gap:splash gap:platform="android" gap:qualifier="port-xhdpi" src="www/assets/res/screen/android/screen-xhdpi-portrait.png" />
+    <gap:splash gap:platform="android" gap:qualifier="land-ldpi" src="www/assets/res/screen/android/screen-ldpi-landscape.png" />
+    <gap:splash gap:platform="android" gap:qualifier="land-mdpi" src="www/assets/res/screen/android/screen-mdpi-landscape.png" />
+    <gap:splash gap:platform="android" gap:qualifier="land-hdpi" src="www/assets/res/screen/android/screen-hdpi-landscape.png" />
+    <gap:splash gap:platform="android" gap:qualifier="land-xhdpi" src="www/assets/res/screen/android/screen-xhdpi-landscape.png" />
     <gap:splash gap:platform="blackberry" src="www/assets/res/screen/blackberry/screen-225.png" />
     <gap:splash gap:platform="ios" height="480" src="www/assets/res/screen/ios/screen-iphone-portrait.png" width="320" />
     <gap:splash gap:platform="ios" height="960" src="www/assets/res/screen/ios/screen-iphone-portrait-2x.png" width="640" />
@@ -84,7 +88,7 @@
     <preference name="xwalkVersion" value="15+" />
     <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
     <preference name="xwalkMode" value="embedded" />
-    <preference name="xwalkMultipleApk" value="true" />
+    <preference name="xwalkMultipleApk" value="false" />
     <engine name="browser" spec="~4.0.0" />
     <engine name="android" spec="~4.1.1" />
 </widget>
