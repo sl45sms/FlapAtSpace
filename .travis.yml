@@ -1,0 +1,18 @@
+language: android
+android:
+  components:
+    - build-tools-22.0.1 # build tools version
+    - android-22 # Android Platform Target
+env:
+global:
+before_install:
+install:
+before_script:
+script:
+- echo "Run gulp"
+- npm prepare
+- echo "Phonegap Build"
+- npm run build
+after_success:
+after_failure:
+after_script:

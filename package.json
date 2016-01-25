@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "engines": {
+    "node": ">=0.10.0"
+  },
+"scripts" : {
+  "prepare" : "./.bin/gulp default",
+  "build" : "./.bin/phonegap build android"
+  },
+"devDependencies": {
+    "phonegap": "5.3.9",
+    "gulp": "^3.9.0"
+  }
+}
