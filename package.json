@@ -4,11 +4,24 @@
     "node": ">=0.10.0"
   },
 "scripts" : {
-  "prepare" : "./.bin/gulp default",
-  "build" : "./.bin/phonegap build android"
+  "prepare" : "./node_modules/.bin/gulp default",
+  "buildandroid" : "cd ./dist && ../node_modules/.bin/phonegap build android && cd ..",
+  "buildbrowser" : "cd ./dist && ../node_modules/.bin/phonegap build browser && cd .."
   },
 "devDependencies": {
-    "phonegap": "5.3.9",
-    "gulp": "^3.9.0"
+    "phonegap": "5.3.x",
+    "gulp": "3.9.x",
+    "gulp-uglify":"*",
+    "gulp-cssmin":"*",
+    "gulp-concat":"*",
+    "gulp-rimraf":"*",
+    "gulp-imagemin":"*",
+    "imagemin-pngcrush":"*",
+    "gulp-replace":"*",
+    "gulp-rename":"*",
+    "path":"*",
+    "run-sequence":"*",
+    "streamqueue":"*",
+    "gulp-order":"*"
   }
 }
