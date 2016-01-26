@@ -12,8 +12,10 @@ before_script:
 script:
 - echo "Run gulp"
 - npm run prepare
-- echo "Phonegap Build"
-- npm run build
+- echo "Phonegap Build Android"
+- npm run buildandroid
+- echo "Phonegap Build Browser"
+- npm run buildbrowser
 after_success:
 after_failure:
 after_script:
