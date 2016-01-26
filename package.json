@@ -5,7 +5,7 @@
   },
 "scripts" : {
   "prepare" : "./node_modules/.bin/gulp default",
-  "buildandroid" : "cd ./dist && ../node_modules/.bin/phonegap build android && cd ..",
+  "buildandroid" : "cd ./dist && ../node_modules/.bin/phonegap plugin add cordova-plugin-crosswalk-webview && ../node_modules/.bin/phonegap build android && cd ..",
   "buildbrowser" : "cd ./dist && ../node_modules/.bin/phonegap build browser && cd .."
   },
 "devDependencies": {
