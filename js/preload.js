@@ -30,19 +30,19 @@ var preLoad={
 		this.load.setPreloadSprite(this.preloadBar);
             
             //sounds //autodecode the first two 
-            this.game.load.audio('gravity_sound','assets/flap/gravity.ogg',true);
-            this.game.load.audio('whirlpool_sound','assets/flap/whirlpool.ogg',true);
-            this.game.load.audio('alien_explosion','assets/flap/alien_explosion.ogg');     
-            this.game.load.audio('blackhole_slurp','assets/flap/blackhole_slurp.ogg');    
-            this.game.load.audio('shield_sound','assets/flap/shield.ogg');         
-            this.game.load.audio('ufo_shot','assets/flap/ufo_shot.ogg');
-            this.game.load.audio('alien_shot','assets/flap/alien_shot.ogg');
-            this.game.load.audio('blackhole_warning','assets/flap/blackhole_warning.ogg');
-            this.game.load.audio('timewrapp_sound','assets/flap/timewrapp.ogg');
-            this.game.load.audio('asteroid_explosion','assets/flap/asteroid_explosion.ogg');
-            this.game.load.audio('ufo_explosion','assets/flap/ufo_explosion.ogg');
+            this.game.load.audio('gravity_sound',['assets/flap/gravity.ogg','assets/flap/gravity.mp3'],true);
+            this.game.load.audio('whirlpool_sound',['assets/flap/whirlpool.ogg','assets/flap/whirlpool.mp3'],true);
+            this.game.load.audio('alien_explosion',['assets/flap/alien_explosion.ogg','assets/flap/alien_explosion.mp3']);     
+            this.game.load.audio('blackhole_slurp',['assets/flap/blackhole_slurp.ogg','assets/flap/blackhole_slurp.mp3']);    
+            this.game.load.audio('shield_sound',['assets/flap/shield.ogg','assets/flap/shield.mp3']);         
+            this.game.load.audio('ufo_shot',['assets/flap/ufo_shot.ogg','assets/flap/ufo_shot.mp3']);
+            this.game.load.audio('alien_shot',['assets/flap/alien_shot.ogg','assets/flap/alien_shot.mp3']);
+            this.game.load.audio('blackhole_warning',['assets/flap/blackhole_warning.ogg','assets/flap/blackhole_warning.mp3']);
+            this.game.load.audio('timewrapp_sound',['assets/flap/timewrapp.ogg','assets/flap/timewrapp.mp3']);
+            this.game.load.audio('asteroid_explosion',['assets/flap/asteroid_explosion.ogg','assets/flap/asteroid_explosion.mp3']);
+            this.game.load.audio('ufo_explosion',['assets/flap/ufo_explosion.ogg','assets/flap/ufo_explosion.mp3']);
             //First to advance decode time
-            this.game.load.audio('music','assets/common/music/Jahzzar_-_03_-_Montmartre.ogg',true);
+            this.game.load.audio('music',['assets/common/music/Jahzzar_-_03_-_Montmartre.ogg','assets/common/music/Jahzzar_-_03_-_Montmartre.mp3'],true);
             
             //commons          
             this.game.load.image("gametitle","assets/intro/gametitle.png");
