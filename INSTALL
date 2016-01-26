@@ -78,7 +78,7 @@ sudo vim /etc/udev/rules.d/51-android-rules
          SUBSYSTEM=="usb", ATTR{idVendor}=="0fce", ATTR{idProduct}=="51c5", MODE="0664", OWNER="username" #--change to yours username
 reboot
 
-npn run buildandroid
+npm run buildandroid
 OR 
 Manual Build 
 Create and run android build
