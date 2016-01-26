@@ -1,3 +1,12 @@
+First install nodejs and npm 
+look for that matter to https://nodejs.org/en/download/package-manager/
+then 
+
+npm install
+
+OR
+
+Manual Installation
 
 Install phonegap
 ----------------
@@ -5,7 +14,6 @@ sudo npm install -g phonegap@latest
 
 Instal gulp and friends
 -----------------------
-
 sudo npm install --global gulp
 sudo npm install --global gulp-uglify
 sudo npm install --global gulp-cssmin
@@ -20,6 +28,8 @@ sudo npm install --global run-sequence
 sudo npm install --global streamqueue
 sudo npm install --global gulp-order
 
+
+For both ways you have first to install Java and Android SDK
 
 Install Java 1.7
 ----------------
@@ -68,6 +78,9 @@ sudo vim /etc/udev/rules.d/51-android-rules
          SUBSYSTEM=="usb", ATTR{idVendor}=="0fce", ATTR{idProduct}=="51c5", MODE="0664", OWNER="username" #--change to yours username
 reboot
 
+npn run buildandroid
+OR 
+Manual Build 
 Create and run android build
 ----------------------------
 cd dist 
@@ -77,6 +90,9 @@ sudo adb start-server
 --plugin phone to usb and authorize
 adb devices
 phonegap run android
+
+
+
 
 Debug
 ------
