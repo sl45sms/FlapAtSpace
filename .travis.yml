@@ -10,7 +10,7 @@ install:
 before_script:
 script:
 - echo "Run gulp"
-- npm prepare
+- npm run prepare
 - echo "Phonegap Build"
 - npm run build
 after_success:
