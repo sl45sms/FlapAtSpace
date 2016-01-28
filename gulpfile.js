@@ -8,6 +8,7 @@ var config = {
   dest: 'dist/www',
   cordova: true,
   minify_images: false,
+  fb_appID: null,
 };
 
 
