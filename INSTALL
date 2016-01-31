@@ -86,6 +86,9 @@ Create and run android build
 cd dist 
 phonegap plugin add cordova-plugin-crosswalk-webview --for performance!
 
+phonegap plugin add https://github.com/Wizcorp/phonegap-facebook-plugin/ --variable APP_ID="xxxx" --variable APP_NAME="flapatspace" --for facebook interaction
+
+
 sudo adb start-server
 --plugin phone to usb and authorize
 adb devices

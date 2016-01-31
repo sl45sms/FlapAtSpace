@@ -27,28 +27,32 @@ init: function(thisgame){ //You can pass any number of init parameters
 
 	this.gameTitle = this.game.add.sprite(this.game.world.centerX,30,"gametitle");
 	this.gameTitle.anchor.setTo(0.5,0);
+	
 	this.playButton = this.game.add.button(this.game.world.centerX,this.game.world.height-100,"taptoplay",this.playTheGame,this);
 	this.playButton.anchor.setTo(0.5,0.5);
     this.playButton.kill();	
 
 
-var ypos=(this.gameTitle.y+this.gameTitle.height)+30;
-this.introtextshadow = game.add.bitmapText(21, ypos+1,'introFontsShadow','', this.fontSize);    
-this.introtextshadow.anchor.set(0,0);
-this.introtext = game.add.bitmapText(20, ypos,'introFonts','', this.fontSize);
-this.introtext.anchor.set(0,0);
-
-   //key mouse touch playTheGame    
-   this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-   this.spaceKey.onDown.add(this.playTheGame, this); 
-   this.input.onDown.add(this.playTheGame, this); //Gia touch se kinita kai mouse
-
-//lets music play
-this.game.globals.basic_loop = game.add.audio('basic_loop',0.6,true);
+    var ypos=(this.gameTitle.y+this.gameTitle.height)+30;
+    this.introtextshadow = game.add.bitmapText(21, ypos+1,'introFontsShadow','', this.fontSize);    
+    this.introtextshadow.anchor.set(0,0);
+    this.introtext = game.add.bitmapText(20, ypos,'introFonts','', this.fontSize);
+    this.introtext.anchor.set(0,0);
+    
+    
+    
+    //FB login at lower left corner
+    this.FBloginButton = this.game.add.button(this.game.world.x+10,this.game.world.height-100,"FBlogin",this.game.globals.FBlogin,this);
+	this.FBloginButton.anchor.setTo(0,0.5);
 
 
 
-this.nextLine();
+    //lets music play
+    this.game.globals.basic_loop = game.add.audio('basic_loop',0.6,true);
+
+
+
+    this.nextLine();
 
 
 
@@ -58,13 +62,15 @@ this.nextLine();
 	this.game.globals.updateStars();
 	
 	if (this.cache.isSoundDecoded('first_loop')&&this.letsstart==false){
-	    //this.game.globals.first_loop.fadeOut(2000);
-        //this.game.globals.basic_loop.play('',0,1,true);
 		this.letsstart=true;
 		this.playButton.revive();
 	}
 	
-	
+	if (this.game.globals.fbConnected==true||navigator.onLine==false) 
+	     this.FBloginButton.kill(); else 
+	   if(navigator.onLine==true&&this.game.globals.fbConnected==false) 
+	     this.FBloginButton.revive(); 
+
 	},
 	playTheGame: function(){
      if (this.letsstart==true){	

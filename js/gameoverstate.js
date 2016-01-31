@@ -15,9 +15,10 @@ create: function(){
 	
 		this.gameTitle = this.game.add.sprite(this.game.world.centerX,120,"gametitle");
 		this.gameTitle.anchor.setTo(0.5,0.5);
+
 		this.playButton = this.game.add.button(this.game.world.centerX,630,"taptoplay",this.playTheGame,this);
 		this.playButton.anchor.setTo(0.5,0.5);
-
+        this.playButton.revive();
 
         var ypos=(this.gameTitle.y+this.gameTitle.height)+90;
         this.gameOverText = game.add.bitmapText(this.game.world.centerX, ypos+1,'introFonts',this.t['game over'], 64);    
@@ -26,12 +27,15 @@ create: function(){
         this.gameOverAgain = game.add.bitmapText(this.game.world.centerX, ypos+1+this.gameOverText.height+10,'introFonts',this.t['start again'], 32);    
         this.gameOverAgain.anchor.set(0.5,0.5);
 
+		this.scoreButton = this.game.add.button(10,630,"FBlogin",this.game.globals.postFBscore,this);
+		this.scoreButton.anchor.setTo(0.5,0.5);
+        this.scoreButton.revive();
 
 	
     //key mouse touch playTheGame    
-   this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-   this.spaceKey.onDown.add(this.playTheGame, this); 
-   this.input.onDown.add(this.playTheGame, this); //Gia touch se kinita kai mouse
+  // this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+   //this.spaceKey.onDown.add(this.playTheGame, this); 
+   //this.input.onDown.add(this.playTheGame, this); //Gia touch se kinita kai mouse
 
 	},
 	update:function(){

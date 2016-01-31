@@ -161,9 +161,10 @@ gulp.task('js', function() {
       "js/main.js",
       "js/ads.js"
            ])
-    .pipe(replace(/\+cheats\+[\S\s]*\-cheats\-/g, ''))      
+    .pipe(replace(/\+cheats\+[\S\s]*\-cheats\-/g, ''))
+    .pipe(replace("--FBID--",config.fb_appID))      
     .pipe(concat('app.js'))
-    .pipe(uglify()) 
+   // .pipe(uglify()) 
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest(path.join(config.dest, 'js')));
 });

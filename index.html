@@ -16,8 +16,8 @@
     img-src 'self' data: gap: https://ssl.gstatic.com https://*.facebook.com https://*.facebook.net;
     style-src 'self' 'unsafe-inline'; 
     media-src *;
-    script-src 'self' https://*.facebook.net; 
-    frame-src  https://*.facebook.net https://*.facebook.com;
+    script-src 'self' https://*.facebook.net http://*.facebook.net https://*.facebook.com http://*.facebook.com;
+    frame-src  https://*.facebook.net https://*.facebook.com http://*.facebook.net http://*.facebook.com; 
     object-src 'self';">
     <meta charset="utf-8">
     <link rel="shortcut icon" href="assets/common/favicon.ico" type="image/x-icon" />
@@ -59,6 +59,7 @@
 	<link rel="stylesheet" href="css/app.css" type="text/css" charset="utf-8" />
 </head>	
 <body>
+<div id="fb-root"></div>
 <!-- Post Production -->
 <div id="orientationMsg"></div>
 <!--mobile-->

@@ -41,19 +41,24 @@ var preLoad={
             this.game.load.audio('timewrapp_sound',['assets/flap/timewrapp.ogg','assets/flap/timewrapp.mp3']);
             this.game.load.audio('asteroid_explosion',['assets/flap/asteroid_explosion.ogg','assets/flap/asteroid_explosion.mp3']);
             this.game.load.audio('ufo_explosion',['assets/flap/ufo_explosion.ogg','assets/flap/ufo_explosion.mp3']);
+
             //First to advance decode time
             this.game.load.audio('music',['assets/common/music/Jahzzar_-_03_-_Montmartre.ogg','assets/common/music/Jahzzar_-_03_-_Montmartre.mp3'],true);
             
-            //commons          
+            //intro          
             this.game.load.image("gametitle","assets/intro/gametitle.png");
-            this.game.load.image("taptoplay","assets/intro/taptoplay.png");
+            this.game.load.image("taptoplay","assets/intro/taptoplay_"+game.globals.lng+".png");
+            this.game.load.image('FBlogin', 'assets/intro/FBlogin_'+game.globals.lng+'.png');
+            //flap
             this.game.load.image('nubulu', 'assets/flap/background.png');
             this.game.load.image('gametitlesmall', 'assets/flap/gametitleSmall.png');
             this.game.load.image('star', 'assets/flap/star.png');
             this.game.load.image('health_back', 'assets/flap/health_back.png');
             this.game.load.image('health_bar', 'assets/flap/health_bar.png');
-            this.game.load.bitmapFont('introFonts', 'assets/intro/introFonts.png', 'assets/intro/introFonts.fnt');
-            this.game.load.bitmapFont('introFontsShadow', 'assets/intro/introFontsShadow.png', 'assets/intro/introFonts.fnt');
+            
+            //fonts
+            this.game.load.bitmapFont('introFonts', 'assets/common/introFonts.png', 'assets/common/introFonts.fnt');
+            this.game.load.bitmapFont('introFontsShadow', 'assets/common/introFontsShadow.png', 'assets/common/introFonts.fnt');
 
             //flapstate
             this.game.load.image('shield', 'assets/flap/shield.png');
