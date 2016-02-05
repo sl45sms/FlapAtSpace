@@ -17,7 +17,7 @@
     style-src 'self' 'unsafe-inline'; 
     media-src *;
     script-src 'self' https://*.facebook.net http://*.facebook.net https://*.facebook.com http://*.facebook.com;
-    frame-src  https://*.facebook.net https://*.facebook.com http://*.facebook.net http://*.facebook.com; 
+    frame-src  'self' https://*.facebook.net https://*.facebook.com http://*.facebook.net http://*.facebook.com; 
     object-src 'self';">
     <meta charset="utf-8">
     <link rel="shortcut icon" href="assets/common/favicon.ico" type="image/x-icon" />
@@ -59,11 +59,11 @@
 	<link rel="stylesheet" href="css/app.css" type="text/css" charset="utf-8" />
 </head>	
 <body>
-<div id="fb-root"></div>
 <!-- Post Production -->
 <div id="orientationMsg"></div>
 <!--mobile-->
-<script type="text/javascript" src="js/lib/phaser-dev.js"></script>
+<script type="text/javascript" src="js/lib/openfb.js"></script>
+<script type="text/javascript" src="js/lib/phaser.min.js"></script>
 <script type="text/javascript" src="js/boot.js"></script>  
 <script type="text/javascript" src="js/preload.js"></script>  
 <script type="text/javascript" src="js/introstate.js"></script>    

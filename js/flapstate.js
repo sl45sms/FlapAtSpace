@@ -320,6 +320,12 @@ create: function() {
          this.distanceText.text = this.t['distance'] + this.pad(this.maxDistance-this.distance,5)+this.t['ly'];
 	   }, this); 
   //-cheats-//  
+  
+//REMOVE  
+this.scoreButton = this.game.add.button(10,630,"FBlogin",this.game.globals.postFBscore,this);
+this.scoreButton.anchor.setTo(0.5,0.5);
+this.scoreButton.revive();
+//--REMOVE
  },
 
  update: function() {

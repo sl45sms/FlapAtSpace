@@ -121,6 +121,9 @@ gulp.task('html', function() {
     .pipe(gulp.dest(config.dest));
   } else
    gulp.src(['index.html']) .pipe(gulp.dest(config.dest));
+   
+   gulp.src(['logoutcallback.html']) .pipe(gulp.dest(config.dest));
+   gulp.src(['oauthcallback.html']) .pipe(gulp.dest(config.dest));
 });
 
 /*=================================================
@@ -151,6 +154,7 @@ gulp.task('css', function () {
 
 gulp.task('js', function() {
       gulp.src([
+      "js/lib/openfb.js",
       "js/lib/phaser.min.js",
       "js/boot.js",
       "js/preload.js",

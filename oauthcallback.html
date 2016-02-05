@@ -1,0 +1,18 @@
+<html>
+<body>
+<script>
+
+try{
+     if(parent.window.opener != null && !parent.window.opener.closed)
+        {
+          parent.window.opener.openFB.oauthCallback(window.location.href);
+          window.close();
+        }
+
+    }catch(e){ console.log(e.description); }  	
+	
+    window.opener.openFB.oauthCallback(window.location.href);
+    window.close();
+</script>
+</body>
+</html>

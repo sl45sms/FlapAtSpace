@@ -45,92 +45,73 @@ game.globals={
 	fbname:null,
 	fbConnected:false,
 
-FBloginStatus:function(n){
 
-
-
-/*
-FB.getLoginStatus(function(response) {
-	//TODO hide button on connected
-  if (response.status === 'connected') {
-    // the user is logged in and has authenticated your
-    // app, and response.authResponse supplies
-    // the user's ID, a valid access token, a signed
-    // request, and the time the access token 
-    // and signed request each expire
-    var uid = response.authResponse.userID;
-    var accessToken = response.authResponse.accessToken;
-  } else if (response.status === 'not_authorized') {
-    // the user is logged in to Facebook, 
-    // but has not authenticated your app
-  } else {
-    // the user isn't logged in to Facebook.
-  }
- });
-*/
-
-
-
-},
 FBlogin:function(n){//n is button itself
-facebookConnectPlugin.login(["publish_actions"], 
-                  this.game.globals.sucessFBlogin, //sucess
-                  function(e){console.log(e);});  //error
-               
-},
-FBgetuser:function(response){
 
-facebookConnectPlugin.api("/me",["name","email"], 
-      function(t) {
-        facebook = {
-            appId: "--FBID--",
-            id: response.authResponse.userID,
-            accessToken: response.authResponse.accessToken,
-            name: t.name,
-            email: t.email
-        };
-        this.game.globals.email=facebook.email;
-        this.game.globals.fbid=facebook.id;
-        this.game.globals.fbname=facebook.name;
-        this.game.globals.fbConnected = true;
-        this.game.globals.showLoginButton=false;
-        console.log(facebook);
-
-    },
-    function(e){console.log(e);}); //error
+openFB.login(
+                function(response) {
+                    if(response.status === 'connected') {
+                        console.log('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
+                        window.localStorage.setItem("fbtoken",response.authResponse.accessToken); //save token for later use
+                        game.globals.FBgetuser();
+                    } else {
+                        console.log('Facebook login failed: ' + response.error);
+                        			        game.globals.fbConnected = false;
+                                            game.globals.showLoginButton=true;
+                    }
+                }, {scope: 'email,publish_actions'});
 },
-sucessFBlogin:function (response) {
-console.log("on sucessFBlogin", response);
-   if(response.status === "connected"){   
-	    window.localStorage.setItem("fbtoken",response.authResponse.accessToken); //save token for later use
-        this.game.globals.FBgetuser(response);
-    } else this.game.globals.fbConnected = false;
+FBgetuser:function(){
+
+openFB.api({
+            path: '/me',
+            success: function(data) {
+                    console.log(JSON.stringify(data));
+                    game.globals.fbConnected = true;
+                    game.globals.showLoginButton = false;
+                                
+            },
+            error: function(e) {
+				    console.log(e);	
+			        game.globals.fbConnected = false;
+                    game.globals.showLoginButton = true;	
+		         
+			  }
+            });
 
 },
 postFBscore:function(n){ //TODO post score if user is connected
 
-facebookConnectPlugin.getLoginStatus( function(response) {
-                var url = '/me/scores?method=post&message=' + encodeURIComponent({score:1000}) + '&access_token=' + window.localStorage.getItem("fbtoken");
-                facebookConnectPlugin.api(
-                    url,
-                    ['publish_actions'],
-                function (response) { console.log(response); },
-                function (error) { console.error(error); }
-                );
+ openFB.api({
+            method: 'POST',
+            path: '/me/scores',
+            params: {
+                score: n 
             },
-            function(e){console.log(e);});
-
+            success: function(data) {
+                console.log(data);
+            },
+            error: function(e){
+				console.log(e);
+			    }
+            });   
 },
 getFBscore:function(n){ //TODO get highscore if user is connected
 
-/*
-	         FB.api("/--FBID--/scores", "get", function(r) {
-             console.log(r);
-            })
-*/	
-
-
-
+ openFB.api({
+            method: 'GET',
+            path: '/me/scores',
+            params: {
+                score: n 
+            },
+            success: function(data) {
+                console.log(data);
+            },
+            error: function(e){
+				console.log(e);
+			    }
+            });
+ 
 },
 
 createStars:function(){
@@ -211,68 +192,23 @@ if (!localStorage.getItem("lng")) localStorage.setItem("lng", game.globals.lng)
 else game.globals.lng = localStorage.getItem("lng");
 
 
-//FB
-window.fbAsyncInit = function() {
-        if (window.cordova.platformId === "browser") {
-               facebookConnectPlugin.browserInit('--FBID--', 'v2.5');
-               facebookConnectPlugin.getLoginStatus(
-                     this.game.globals.sucessFBlogin,
-                                 function(e){console.log(e);}); //Error
-        }
-    }
-
-
-
-/*
-//if(navigator.onLine) {
-
-
-  window.fbAsyncInit = function() {
-  //this must before call FB.init
-  FB.Event.subscribe('auth.statusChange', function(response) {
-    if(response.status == 'connected') {
-        game.globals.FBgetuser(response);
-    }
-   });
+ 
   
-  FB.init({
-      appId                : '--FBID--',
-      oauth                : true,
-      status               : true,
-      frictionlessRequests : true,
-      xfbml                : false,
-      version              : 'v2.5'
-    });
-    
-    
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     var isoLng="en_EN"; //TODO beter?
-     if(game.globals.lng==="el")isoLng="el_GR";
-      
-     js.src = '//connect.facebook.net/'+isoLng+'/sdk.js'; //TODO check language from above
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-   
-   
-   
-//}
-*/
-
-
-
-
+//get login status
+if(navigator.onLine) {
+	game.globals.FBgetuser();	  
+    }
+  
 game.state.start('Boot',false,false,game);
 }
 
 //Detect if on browser or mobile app
 var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 if ( app ) {
+    openFB.init({appId: '--FBID--', tokenStore: window.localStorage});
     document.addEventListener("deviceready", onDeviceReady, false);
+
 } else {
+    openFB.init({appId: '--FBID--', tokenStore: window.localStorage,cordovaOAuthRedirectURL:'http://localhost:10631/oauthcallback.html'});
     onDeviceReady();
 }
