@@ -202,13 +202,23 @@ if(navigator.onLine) {
 game.state.start('Boot',false,false,game);
 }
 
+
+
+console.log(window.cordova);
+
 //Detect if on browser or mobile app
 var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+
+
+
+
 if ( app ) {
+	
     openFB.init({appId: '--FBID--', tokenStore: window.localStorage});
     document.addEventListener("deviceready", onDeviceReady, false);
 
 } else {
-    openFB.init({appId: '--FBID--', tokenStore: window.localStorage,cordovaOAuthRedirectURL:'http://localhost:10631/oauthcallback.html'});
+    console.log("on browser");
+    openFB.init({appId: '--FBID--', tokenStore: window.localStorage});
     onDeviceReady();
 }

@@ -1,18 +1,10 @@
 <html>
 <body>
 <script>
-
-try{
-     if(parent.window.opener != null && !parent.window.opener.closed)
-        {
-          parent.window.opener.openFB.oauthCallback(window.location.href);
-          window.close();
-        }
-
-    }catch(e){ console.log(e.description); }  	
-	
+try{ //in case we call outside cordova browser platform
     window.opener.openFB.oauthCallback(window.location.href);
     window.close();
+    }catch(e){ console.log(e.description); }
 </script>
 </body>
 </html>
