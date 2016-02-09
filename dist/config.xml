@@ -92,4 +92,5 @@
     <engine name="browser" spec="~4.0.0" />
     <engine name="android" spec="~4.1.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="https://github.com/apache/cordova-plugin-inappbrowser.git" />
+    <hook type="after_prepare" src="../appAfterPrepare.js" />
 </widget>

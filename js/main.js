@@ -48,6 +48,9 @@ game.globals={
 
 FBlogin:function(n){//n is button itself
 
+//TODO mono gia to login mporo na xrisimopoiiso to plugin phonegap-facebook-plugin ... 
+//kai gia ola ta alla to openFB logo tou oti to plugin den kanei post!
+//opote an epistrecei token to sozo sto fbAccessToken tou openfb
 openFB.login(
                 function(response) {
                     if(response.status === 'connected') {
