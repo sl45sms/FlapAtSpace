@@ -1,17 +1,19 @@
 language: android
 android:
   components:
-    - build-tools-22.0.1 # build tools version
-    - android-22 # Android Platform Target
-env:
-global:
+  - build-tools-22.0.1
+  - android-22
+env: 
+global: 
 cache:
   directories:
-    - node_modules
+  - node_modules
 before_install:
+- openssl aes-256-cbc -K $encrypted_ef87e3256c11_key -iv $encrypted_ef87e3256c11_iv
+  -in config.js.enc -out config.js -d
 install:
 - npm install
-before_script:
+before_script: 
 script:
 - echo "Run gulp"
 - npm run prepare
@@ -19,6 +21,6 @@ script:
 - npm run buildandroid
 - echo "Phonegap Build Browser"
 - npm run buildbrowser
-after_success:
-after_failure:
-after_script:
+after_success: 
+after_failure: 
+after_script: 
