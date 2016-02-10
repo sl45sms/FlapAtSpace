@@ -1,9 +1,11 @@
 module.exports = function(ctx) {
 
-console.log(ctx);
+//console.log(ctx);
 
 var rootdir=ctx.opts.projectRoot;
 
+var fs = ctx.requireCordovaModule('fs'),
+    path = ctx.requireCordovaModule('path');
 
 function rpl(filename, regex, replace_with) {
     var data = fs.readFileSync(filename, 'utf8');
@@ -13,7 +15,6 @@ function rpl(filename, regex, replace_with) {
 
 
 if (rootdir) {
-	console.log("rootdir=",rootdir);
 
     var ourconfigfile = path.join(rootdir, "../config.js"); 
     /*
@@ -26,23 +27,15 @@ if (rootdir) {
     var config={  fb_appID: null, };
     Cfg(config);
  
-    console.log("set id",config.fb_appID);
+    ctx.opts.platforms.forEach(function(val){ 
+    var val = "platforms/"+val+"/"+val+".json";
  
-    var files = [
-        // android
-        "platforms/android/android.json",
-        //browser
-        "platforms/browser/browser.json",
-        //plugin
-        "plugins/fetch.json",
-    ];
-    files.forEach(function(val, index, array) {
-        var filename = path.join(rootdir, val);
+    var filename = path.join(rootdir, val);
         if (fs.existsSync(filename)) {
               rpl(filename,'("APP_ID":\\s")(.*)(".*)',config.fb_appID);
-            console.log("to file",filename);
+     //       console.log("to file",filename);
         } else {
-            console.log("not exist: "+filename);
+            console.log("AfterPrepareHook, file not exist: "+filename);
         }
     });
 }
