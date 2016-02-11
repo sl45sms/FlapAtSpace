@@ -51,18 +51,33 @@ FBlogin:function(n){//n is button itself
 //TODO mono gia to login mporo na xrisimopoiiso to plugin phonegap-facebook-plugin ... 
 //kai gia ola ta alla to openFB logo tou oti to plugin den kanei post!
 //opote an epistrecei token to sozo sto fbAccessToken tou openfb
+
+
+if (!window.cordova || (window.cordova && window.cordova.platformId === 'browser')){
+
+
 openFB.login(
                 function(response) {
                     if(response.status === 'connected') {
                         console.log('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
-                        window.localStorage.setItem("fbtoken",response.authResponse.accessToken); //save token for later use
                         game.globals.FBgetuser();
                     } else {
                         console.log('Facebook login failed: ' + response.error);
                         			        game.globals.fbConnected = false;
                                             game.globals.showLoginButton=true;
                     }
-                }, {scope: 'email,publish_actions'});
+                }, {scope: 'publish_actions'});
+
+} else {	
+facebookConnectPlugin.login(["publish_actions"],   
+                   function (response) {
+                      if(response.status === "connected"){//sucess
+		               console.log('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);   
+ 	                    window.localStorage.setItem("fbAccessToken",response.authResponse.accessToken); //save token for openFB
+                       this.game.globals.FBgetuser(response);
+                      } else this.game.globals.fbConnected = false;,
+                    function(e){console.log(e);});  //error
+}
 },
 FBgetuser:function(){
 
