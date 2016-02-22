@@ -260,7 +260,20 @@ create: function() {
    this.collectedChocosText.scale.setTo(this.scaleRatio, this.scaleRatio);
    
    //highscore 
-   if (!localStorage.getItem("highscore")) localStorage.setItem("highscore", 630);//beatme!
+   
+   if (!localStorage.getItem("highscore")) 
+     {
+       //TODO prota perno to trexon apothikeumeno score me thn getFBscore
+       //meta sigrino me to topiko highscore
+        //an to topiko score einai megalitero 
+       this.game.globals.FBgetscore(function(data){
+                                     console.log("set highscore",data);
+                                     if (data.score)
+                                       localStorage.setItem("highscore", data.score);//beatme!
+                                       else localStorage.setItem("highscore", 630);//beatme!
+                                   });
+       
+    }
    this.highscore=localStorage.getItem("highscore");
    this.highscoreText=this.game.add.bitmapText(this.collectedChocosText.x+this.collectedChocosText.width+10, 8, 'introFonts',this.t['highscore'] +this.pad(this.highscore,this.padhighscore),26);
    this.highscoreText.tint = 0xff9040;

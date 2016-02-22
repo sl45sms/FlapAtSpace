@@ -52,9 +52,7 @@ FBlogin:function(n){//n is button itself
 //kai gia ola ta alla to openFB logo tou oti to plugin den kanei post!
 //opote an epistrecei token to sozo sto fbAccessToken tou openfb
 
-
 if (!window.cordova || (window.cordova && window.cordova.platformId === 'browser')){
-
 
 openFB.login(
                 function(response) {
@@ -74,13 +72,13 @@ facebookConnectPlugin.login(["publish_actions"],
                       if(response.status === "connected"){//sucess
 		               console.log('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);   
  	                    window.localStorage.setItem("fbAccessToken",response.authResponse.accessToken); //save token for openFB
-                       this.game.globals.FBgetuser(response);
-                      } else this.game.globals.fbConnected = false;,
-                    function(e){console.log(e);});  //error
-}
+                       game.globals.FBgetuser(response);
+                      } else game.globals.fbConnected = false;
+                    
+                     },function(e){console.log(e);});  //error
+          }
 },
 FBgetuser:function(){
-
 openFB.api({
             path: '/me',
             success: function(data) {
@@ -98,7 +96,8 @@ openFB.api({
             });
 
 },
-postFBscore:function(n){ //TODO post score if user is connected
+FBpostscore:function(n){ //TODO post score if user is connected
+
 
  openFB.api({
             method: 'POST',
@@ -114,7 +113,7 @@ postFBscore:function(n){ //TODO post score if user is connected
 			    }
             });   
 },
-getFBscore:function(n){ //TODO get highscore if user is connected
+FBgetscore:function(callback){ //TODO get highscore if user is connected
 
  openFB.api({
             method: 'GET',
@@ -124,9 +123,11 @@ getFBscore:function(n){ //TODO get highscore if user is connected
             },
             success: function(data) {
                 console.log(data);
+                return callback(data);
             },
             error: function(e){
 				console.log(e);
+				callback(e);
 			    }
             });
  
@@ -209,9 +210,6 @@ game.globals.lng = lng;
 if (!localStorage.getItem("lng")) localStorage.setItem("lng", game.globals.lng)
 else game.globals.lng = localStorage.getItem("lng");
 
-
- 
-  
 //get login status
 if(navigator.onLine) {
 	game.globals.FBgetuser();	  
