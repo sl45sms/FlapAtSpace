@@ -1,0 +1,34 @@
+FlapAtSpace
+-----------
+Deliver the space chocolates you collect in your path to nubulu planet, 20000 light years away from Earth.
+
+On the way try to avoid the gravity of planets because it spoils your fuel, but do not worry, 
+you often come across on your route refueling stations.
+
+You can slow your journey, a little, if you pass over chronotounnel. 
+
+Destroy the meteors because if you collide with them will directly destroy your spaceship!
+
+Beware of black holes!
+
+Good luck on your mission!
+
+
+How to play
+===========
+Your goal is to travel 20,000 light years delivering as many chocolates you can.
+
+Press anywhere on the screen to push your spaceship upwards.
+
+Tap on chocolates to collect them.
+
+Tap on meteors to launches missiles against them.
+ If an asteroid falls then your spaceship destroyed immediately.
+
+To fill up your fuel pass over the filling station when he appears.
+
+Passes over the chronotounnel to reduce your speed.
+
+You need more than one shot to destroy enemy spaceships. 
+
+Tap to start!
