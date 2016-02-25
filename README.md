@@ -1,5 +1,5 @@
-[![Coverage Status](https://coveralls.io/repos/github/sl45sms/FlapAtSpace/badge.svg?branch=master)](https://coveralls.io/github/sl45sms/FlapAtSpace?branch=master)
-[![Build Status](https://travis-ci.org/sl45sms/FlapAtSpace.svg?branch=master)](https://travis-ci.org/sl45sms/FlapAtSpace)
+[![Coverage Status](https://coveralls.io/repos/github/sl45sms/FlapAtSpace/badge.svg?branch=master)](https://coveralls.io/github/sl45sms/FlapAtSpace?branch=social)
+[![Build Status](https://travis-ci.org/sl45sms/FlapAtSpace.svg?branch=social)](https://travis-ci.org/sl45sms/FlapAtSpace)
 
 FlapAtSpace
 -----------
